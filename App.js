@@ -14,9 +14,9 @@ export default function App() {
   
   function calcWeights()
   {
-    if(!inpWeight)
+    if(!inpWeight || inpWeight <= 45)
       setWeights("");
-    else if(inpWeight > 45)
+    else
     {
 
       var output = "";
