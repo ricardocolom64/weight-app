@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { Dimensions, Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 
 import { Center, VStack, Skeleton, NativeBaseProvider } from 'native-base';
 
 import TopBar from '../components/TopBar';
+import Example from '../components/Example';
 
 var allWeights = [45, 25, 10, 5, 2.5];
 var barWeight = 45;
@@ -47,8 +48,7 @@ export default function Home() {
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
             <View style={styles.main}>
-                <TopBar />
-                <View style={styles.mainContent}>
+                {/* <View style={styles.mainContent}>
                     <View style={styles.header}>
                         <Text style={styles.headerText}>Home</Text>
                     </View>
@@ -67,7 +67,8 @@ export default function Home() {
                         </View>
                         <StatusBar style="auto" />
                     </View>
-                </View>
+                </View> */}
+                <Example />
             </View>
         </TouchableWithoutFeedback>
     );
@@ -75,8 +76,7 @@ export default function Home() {
 
 const styles = StyleSheet.create({
     main: {
-        minHeight: '100%',
-        backgroundColor: 'green'
+        flex: 1
     },
     mainContent: {
         flex: 1,

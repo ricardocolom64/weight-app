@@ -1,21 +1,33 @@
 import * as React from 'react';
-import { Animated, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Animated, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Constants from 'expo-constants';
 
-const FirstRoute = () => (
-  <View style={[styles.container, { backgroundColor: '#ff4081' }]} />
+const MondayRoute = () => (
+  <View style={[styles.container, { backgroundColor: 'crimson' }]} />
 );
-const SecondRoute = () => (
-  <View style={[styles.container, { backgroundColor: '#673ab7' }]} />
+const TuesdayRoute = () => (
+  <View style={[styles.container, { backgroundColor: 'darkseagreen' }]} />
+);
+const WednesdayRoute = () => (
+  <View style={[styles.container, { backgroundColor: 'dodgerblue' }]} />
+);
+const ThursdayRoute = () => (
+  <View style={[styles.container, { backgroundColor: 'darksalmon' }]} />
+);
+const FridayRoute = () => (
+  <View style={[styles.container, { backgroundColor: 'khaki' }]} />
 );
 
 export default class Example extends React.Component {
   state = {
     index: 0,
     routes: [
-      { key: 'first', title: 'First' },
-      { key: 'second', title: 'Second' },
+      { key: 'monday', title: 'Monday' },
+      { key: 'tuesday', title: 'Tuesday' },
+      { key: 'wednesday', title: 'Wednesday' },
+      { key: 'thursday', title: 'Thursday' },
+      { key: 'friday', title: 'Friday' },
     ],
   };
 
@@ -36,6 +48,7 @@ export default class Example extends React.Component {
 
           return (
             <TouchableOpacity
+              key={i}
               style={styles.tabItem}
               onPress={() => this.setState({ index: i })}>
               <Animated.Text style={{ opacity }}>{route.title}</Animated.Text>
@@ -46,19 +59,34 @@ export default class Example extends React.Component {
     );
   };
 
-  _renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
+  _renderScene = ({ route }) => {
+    switch (route.key) {
+      case 'monday':
+        return <View><Text>Cat</Text><MondayRoute />
+        </View>;
+      case 'tuesday':
+        return <TuesdayRoute />;
+      case 'wednesday':
+        return <WednesdayRoute />;
+      case 'thursday':
+        return <ThursdayRoute />;
+      case 'friday':
+        return <FridayRoute />;
+      default:
+        return null;
+    }
+  };
 
   render() {
     return (
-      <TabView
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderTabBar={this._renderTabBar}
-        onIndexChange={this._handleIndexChange}
-      />
+        <TabView
+          navigationState={this.state}
+          renderScene={this._renderScene}
+          renderTabBar={this._renderTabBar}
+          onIndexChange={this._handleIndexChange}
+          tabBarPosition='bottom'
+          style={styles.tabView}
+        />
     );
   }
 }
@@ -75,5 +103,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 16,
+    paddingHorizontal: 0,
   },
+  tabView: {
+    flex: 1,
+    backgroundColor: 'red',
+  }
 });

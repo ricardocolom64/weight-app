@@ -9,9 +9,6 @@ export default function TopBar() {
     return (
         <View style={styles.container}>
             <CurrentBar />
-            <View style={styles.example}>
-                <Example />
-            </View>
         </View>
     )
 }

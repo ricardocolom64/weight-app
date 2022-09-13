@@ -4,7 +4,7 @@ import { Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View }
 
 import NativeConstants from 'expo-constants';
 
-import {NativeBaseProvider} from "native-base";
+import { NativeBaseProvider } from "native-base";
 
 import Home from './screens/Home';
 import Example from './components/Example';
@@ -19,6 +19,10 @@ export default function App() {
       <View style={styles.container}>
         <View style={styles.statusBar} />
         <TopBar />
+        <Home/>
+        <View style={styles.bottomBar}>
+          <Text>Bottom Bar</Text>
+        </View>
       </View>
     </NativeBaseProvider>
   );
@@ -32,7 +36,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  example: {
-    height: '100%',
+  bottomBar: {
+    height: 84,
+    backgroundColor: 'pink',
   }
 });
