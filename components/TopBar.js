@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 import CurrentBar from './CurrentBar'
-import Example from './Example'
+import DaysAndExercises from './DaysAndExercises'
 import WeekBar from './WeekBar'
 
 export default function TopBar() {

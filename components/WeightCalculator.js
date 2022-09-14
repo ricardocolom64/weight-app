@@ -1,16 +1,12 @@
+import React from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Dimensions, Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 
-import { Center, VStack, Skeleton, NativeBaseProvider } from 'native-base';
-
-import TopBar from '../components/TopBar';
-import DaysAndExercises from '../components/DaysAndExercises';
-
 var allWeights = [45, 25, 10, 5, 2.5];
 var barWeight = 45;
 
-export default function Home() {
+export default function WeightCalculator() {
     const [inpWeight, setInpWeight] = useState(0);
     const [weights, setWeights] = useState("");
 
@@ -37,6 +33,9 @@ export default function Home() {
                 currAmt = 0;
             });
 
+            if(output.length > 1)
+                output = output.substring(0, output.length - 1)
+
             setWeights(output);
         }
     }
@@ -48,11 +47,14 @@ export default function Home() {
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
             <View style={styles.main}>
-                {/* <View style={styles.mainContent}>
+                <View style={styles.mainContent}>
                     <View style={styles.header}>
-                        <Text style={styles.headerText}>Home</Text>
+                        <Text style={styles.headerText}>Weight Calculator</Text>
                     </View>
                     <View style={styles.inpAndOut}>
+                        <View style={styles.output}>
+                            <Text style={styles.outputText}>{weights}</Text>
+                        </View>
                         <View>
                             <TextInput
                                 style={styles.input}
@@ -62,63 +64,66 @@ export default function Home() {
                             // placeholder="test"
                             />
                         </View>
-                        <View style={styles.output}>
-                            <Text style={styles.outputText}>{weights}</Text>
-                        </View>
-                        <StatusBar style="auto" />
                     </View>
-                </View> */}
-                <DaysAndExercises />
+                </View>
             </View>
         </TouchableWithoutFeedback>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
     main: {
-        flex: 1
+        flex: 1,
+        margin: 6,
+        maxHeight: 240,
     },
     mainContent: {
         flex: 1,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        backgroundColor: 'blue',
-        padding: 8,
-    },
-    header: {
-        // backgroundColor: 'red',
-    },
-    headerText: {
-        fontSize: '32',
-        fontWeight: 'bold',
-    },
-    inpAndOut: {
-        minWidth: '100%',
-        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'green',
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderRadius: 8,
+    },
+    header: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 280,
+        height: 64,
+        margin: 6,
+        borderWidth: 1,
+        borderRadius: 8,
+    },
+    headerText: {
+        fontSize: '16',
+        display: 'none',
+    },
+    inpAndOut: {
+        //borderWidth: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     input: {
         height: 40,
         width: 100,
-        margin: 12,
-        borderWidth: 1,
+        margin: 6,
         padding: 10,
         fontSize: 16,
         textAlign: 'center',
+        borderWidth: 1,
+        borderRadius: 8,
     },
     output: {
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 12,
-        minWidth: '80%',
-        height: 300,
+        margin: 6,
+        width: 154,
+        height: 90,
         borderWidth: 1,
-        padding: 10,
+        borderRadius: 8,
     },
     outputText: {
-        fontSize: 24,
-        textAlign: 'center'
+        fontSize: 12,
+        textAlign: 'center',
     }
 });
