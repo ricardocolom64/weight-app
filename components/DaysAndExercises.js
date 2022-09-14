@@ -1,11 +1,23 @@
 import * as React from 'react';
-import { Animated, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { Animated, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { Pressable, Text, Box, HStack, Spacer, ScrollView, Badge, Center, NativeBaseProvider } from "native-base";
 import Constants from 'expo-constants';
 
+import BenchExercise from './BenchExercise';
+
 const MondayRoute = () => (
-  <View style={[styles.container, { backgroundColor: 'crimson' }]}>
-    <Text>Test</Text>
+  <View style={[styles.container, { backgroundColor: 'white' }]}>
+    <ScrollView style={styles.dayExercises}>
+      <BenchExercise/>
+      <BenchExercise/>
+      <BenchExercise/>
+      <BenchExercise/>
+      <BenchExercise/>
+      <BenchExercise/>
+      <BenchExercise/>
+    </ScrollView>
+
   </View>
 );
 const TuesdayRoute = () => (
@@ -76,12 +88,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  dayExercises: {
+    marginHorizontal: 6,
+  },
   tabBar: {
     backgroundColor: 'lightblue',
   },
   tabIndicator: {
     backgroundColor: 'white',
-    
+
   },
   tabLabel: {
     fontSize: 12,

@@ -20,7 +20,6 @@ export default function App() {
       <View style={styles.container}>
         <View style={styles.statusBar} />
         <TopBar />
-        <WeightCalculator />
         <Home/>
         <View style={styles.bottomBar}>
           <Text>Bottom Bar</Text>

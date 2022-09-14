@@ -20,7 +20,6 @@ export default function WeightCalculator() {
 
             var onBar = (inpWeight - 45) * 0.5;
             var currAmt = 0;
-            console.log(onBar);
 
             allWeights.forEach(currWeight => {
                 while (onBar - currWeight >= 0) {
