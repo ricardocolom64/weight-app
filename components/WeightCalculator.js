@@ -2,6 +2,7 @@ import React from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Dimensions, Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { Box, Input, InputGroup, InputRightAddon } from 'native-base';
 
 var allWeights = [45, 25, 10, 5, 2.5];
 var barWeight = 45;
@@ -32,7 +33,7 @@ export default function WeightCalculator() {
                 currAmt = 0;
             });
 
-            if(output.length > 1)
+            if (output.length > 1)
                 output = output.substring(0, output.length - 1)
 
             setWeights(output);
@@ -46,7 +47,7 @@ export default function WeightCalculator() {
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
             <View style={styles.main}>
-                <View style={styles.mainContent}>
+                <Box style={styles.mainContent} bg="white" rounded="8" shadow={0} borderWidth="1" borderColor="coolGray.300">
                     <View style={styles.header}>
                         <Text style={styles.headerText}>Weight Calculator</Text>
                     </View>
@@ -54,17 +55,22 @@ export default function WeightCalculator() {
                         <View style={styles.output}>
                             <Text style={styles.outputText}>{weights}</Text>
                         </View>
-                        <View>
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={setInpWeight}
-                                value={inpWeight}
-                                keyboardType={'numeric'}
-                            // placeholder="test"
-                            />
+                        <View style={styles.input}>
+                            <InputGroup position={"absolute"} right={0}>
+                                <Input
+                                    w="100%"
+                                    h="100%"
+                                    variant={"outline"}
+                                    textAlign={"center"}
+                                    onChangeText={setInpWeight}
+                                    value={inpWeight}
+                                    keyboardType={'numeric'}
+                                />
+                                <InputRightAddon children={"lb"}/>
+                            </InputGroup>
                         </View>
                     </View>
-                </View>
+                </Box>
             </View>
         </TouchableWithoutFeedback>
     )
@@ -80,9 +86,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
-        borderWidth: 1,
-        borderRadius: 8,
     },
     header: {
         justifyContent: 'center',
@@ -104,13 +107,7 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 40,
-        width: 100,
-        margin: 6,
-        padding: 10,
-        fontSize: 16,
-        textAlign: 'center',
-        borderWidth: 1,
-        borderRadius: 8,
+        width: 40,
     },
     output: {
         justifyContent: 'center',

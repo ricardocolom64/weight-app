@@ -18,9 +18,11 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
-        <View style={styles.statusBar} />
-        <TopBar />
-        <Home/>
+        <View style={styles.statusBar}>
+          <StatusBar />
+        </View>
+        <TopBar style={styles.topBar} />
+        <Home />
         <View style={styles.bottomBar}>
           <Text>Bottom Bar</Text>
         </View>
@@ -30,12 +32,18 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-around',
+  },
   statusBar: {
-    backgroundColor: 'firebrick',
     height: NativeConstants.statusBarHeight,
   },
-  container: {
-    flex: 1
+  topBar: {
+    backgroundColor: 'green',
+  },
+  home: {
+
   },
   bottomBar: {
     height: 84,

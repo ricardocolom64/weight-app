@@ -1,13 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { Box, getColor, useColorMode, useColorModeValue } from 'native-base'
 
 export default function CurrentBar() {
     return (
-        <View style={styles.container}>
+        <Box style={styles.container} bg={"blueGray.200"}>
             <Text>Left</Text>
             <Text>Middle</Text>
             <Text>Right</Text>
-        </View>
+        </Box>
     )
 }
 

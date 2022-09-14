@@ -3,22 +3,16 @@ import { StyleSheet, Text, View } from 'react-native'
 
 import CurrentBar from './CurrentBar'
 import DaysAndExercises from './DaysAndExercises'
-import WeekBar from './WeekBar'
 
 export default function TopBar() {
     return (
-        <View style={styles.container}>
-            <CurrentBar />
-        </View>
+        <CurrentBar style={styles.container}/>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'yellow',
+        borderWidth: 5,
     },
-    example: {
-        padding: 0,
-        height: '100%',
-    }
 })
