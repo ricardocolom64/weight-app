@@ -7,7 +7,7 @@ import Constants from 'expo-constants';
 import BenchExercise from './BenchExercise';
 
 const MondayRoute = () => (
-  <View style={[styles.container, { backgroundColor: 'white' }]}>
+  <View style={[styles.container]}>
     <ScrollView style={styles.dayExercises}>
       <BenchExercise/>
       <BenchExercise/>

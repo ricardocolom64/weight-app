@@ -1,6 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, StyleSheet, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+
+import { Text, Button, Avatar, Box } from 'native-base'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import NativeConstants from 'expo-constants';
 
@@ -9,24 +16,81 @@ import { NativeBaseProvider } from "native-base";
 import WeightCalculator from './components/WeightCalculator';
 import Home from './screens/Home';
 import DaysAndExercises from './components/DaysAndExercises';
-import TopBar from './components/TopBar';
+//import TopBar from './components/TopBar';
 
-var allWeights = [45, 25, 10, 5, 2.5];
-var barWeight = 45;
+function TopBar() {
+  return (
+    <Button borderRadius={"8"} padding="1" colorScheme="light" variant="ghost">
+      <Box justifyContent="center" alignItems="center" width="190">
+        <Text fontWeight={"bold"} fontSize="md">September 24, 2022</Text>
+        <Text fontSize="xs" color="grey">(Current)</Text>
+      </Box>
+    </Button>
+  );
+}
+
+function ProfilePicture() {
+  return (
+    <Avatar bg="muted.400" size={"sm"}>R</Avatar>
+  )
+}
+
+function HomeScreen() {
+  return (
+    <View flex="1">
+      <StatusBar />
+
+      <Home />
+    </View>
+  );
+}
+
+function SettingsScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
+
+function MyTabs() {
+  return (
+    <Tab.Navigator screenOptions={{tabBarShowLabel: false, tabBarStyle: {height: 76}}}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerTitle: (props) => <TopBar {...props} />,
+          headerRight: (props) => <ProfilePicture {...props} />,
+          headerTitleContainerStyle: styles.header,
+          headerRightContainerStyle: styles.headerRight,
+          headerStyle: { height: 100},
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={32} />
+          ),
+        }}
+      />
+      <Tab.Screen name="Settings" component={SettingsScreen} options={{
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="cog" color={color} size={32} />
+        ),
+      }} />
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <NativeBaseProvider>
-      <View style={styles.container}>
-        <View style={styles.statusBar}>
-          <StatusBar />
+
+      <NavigationContainer>
+        <View style={styles.container}>
+          <MyTabs />
         </View>
-        <TopBar style={styles.topBar} />
-        <Home />
-        <View style={styles.bottomBar}>
-          <Text>Bottom Bar</Text>
-        </View>
-      </View>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 }
@@ -39,11 +103,13 @@ const styles = StyleSheet.create({
   statusBar: {
     height: NativeConstants.statusBarHeight,
   },
-  topBar: {
-    backgroundColor: 'green',
+  header: {
+    //backgroundColor: "green",
   },
-  home: {
-
+  headerRight: {
+    //backgroundColor: "red",
+    flex: 1,
+    alignItems: "center",
   },
   bottomBar: {
     height: 84,

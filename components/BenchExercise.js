@@ -14,7 +14,7 @@ export default function BenchExercise() {
                     return <Box bg={isPressed ? "coolGray.200" : isHovered ? "coolGray.200" : "white"} p="5" rounded="8" shadow={0} borderWidth="1" borderColor="coolGray.300">
                         <HStack alignItems="center" borderWidth="0">
                             <VStack>
-                                <Text color="coolGray.800" fontWeight="medium" fontSize="lg" lineHeight="xs">
+                                <Text color="coolGray.800" fontWeight="medium" fontSize="md" lineHeight="xs">
                                     Bench
                                 </Text>
                                 <Text fontSize="sm" color="coolGray.400">
