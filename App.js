@@ -31,7 +31,7 @@ function TopBar() {
 
 function ProfilePicture() {
   return (
-    <Avatar bg="muted.400" size={"sm"}>R</Avatar>
+    <Avatar bg="black" size={"sm"}>R</Avatar>
   )
 }
 
@@ -48,7 +48,7 @@ function HomeScreen() {
 function SettingsScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
+      <Text>Settings here idk</Text>
     </View>
   );
 }
@@ -58,7 +58,9 @@ const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
-    <Tab.Navigator screenOptions={{tabBarShowLabel: false, tabBarStyle: {height: 76}}}>
+    <Tab.Navigator screenOptions={{
+      headerStyle: { height: 100 }, tabBarShowLabel: false, tabBarStyle: { height: 78 }
+    }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -67,15 +69,14 @@ function MyTabs() {
           headerRight: (props) => <ProfilePicture {...props} />,
           headerTitleContainerStyle: styles.header,
           headerRightContainerStyle: styles.headerRight,
-          headerStyle: { height: 100},
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={32} />
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? "home" : "home-outline"} color={"black"} size={32} />
           ),
         }}
       />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="cog" color={color} size={32} />
+        tabBarIcon: ({ focused, color, size }) => (
+          <MaterialCommunityIcons name={focused ? "cog" : "cog-outline"} color={"black"} size={32} />
         ),
       }} />
     </Tab.Navigator>

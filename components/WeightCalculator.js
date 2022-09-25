@@ -1,8 +1,7 @@
 import React from 'react'
-import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Dimensions, Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
-import { Box, Input, InputGroup, InputRightAddon, Button, useColorMode, useColorModeValue } from 'native-base';
+import { Keyboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Box, Input, Text, InputGroup, InputRightAddon, Button, useColorMode, useColorModeValue } from 'native-base';
 
 var allWeights = [45, 25, 10, 5, 2.5];
 var barWeight = 45;
@@ -14,8 +13,21 @@ const lightBg = "#F5F5F5";
 const darkBg = "#262626";
 
 export default function WeightCalculator() {
+
+    const defWeightAmts = [
+        {type: 45, amt: 0},
+        {type: 25, amt: 0},
+        {type: 10, amt: 0},
+        {type: 5, amt: 0},
+        {type: 2.5, amt: 0},
+    ]
+
+    
+
     const [inpWeight, setInpWeight] = useState(0);
     const [weights, setWeights] = useState("");
+
+    const [weightAmts, setWeightAmts] = useState(defWeightAmts);
 
     const {
         colorMode,
@@ -24,13 +36,13 @@ export default function WeightCalculator() {
 
 
     function calcWeights() {
-        if (!inpWeight || inpWeight <= 45)
+        if (!inpWeight || inpWeight <= barWeight)
             setWeights("");
         else {
 
             var output = "";
 
-            var onBar = (inpWeight - 45) * 0.5;
+            var onBar = (inpWeight - barWeight) * 0.5;
             var currAmt = 0;
 
             allWeights.forEach(currWeight => {
@@ -43,6 +55,8 @@ export default function WeightCalculator() {
 
                 currAmt = 0;
             });
+
+            console.log(weightAmts[0]);
 
             if (output.length > 1)
                 output = output.substring(0, output.length - 1)
@@ -61,6 +75,11 @@ export default function WeightCalculator() {
                 <Box style={styles.mainContent} bg={useColorModeValue("white", "#151e31")} rounded="8" shadow={0} borderWidth="1" borderColor="coolGray.300">
                     <View style={styles.header} borderColor={useColorModeValue(lightBorder, darkBorder)}>
                         {/* <Button onPress={toggleColorMode}>Toggle</Button> */}
+                        <Box flexDirection={"row"} alignItems="center">
+                            <Box backgroundColor="muted.400" borderWidth="1" width={280} height={1.5} borderRadius="2"/>
+                            <Box backgroundColor="muted.400" borderWidth="1" width={1.5} height={5} position="absolute" left={"60px"}/>
+                            <Box backgroundColor="muted.400" borderWidth="1" width={1.5} height={5} position="absolute" right={"60px"}/>
+                        </Box>
                     </View>
                     <View style={styles.inpAndOut}>
                         <View style={styles.output} borderColor={useColorModeValue(lightBorder, darkBorder)}>
@@ -101,7 +120,6 @@ const styles = StyleSheet.create({
     header: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 280,
         height: 64,
         margin: 6,
         borderWidth: 1,
@@ -132,5 +150,6 @@ const styles = StyleSheet.create({
     outputText: {
         fontSize: 12,
         textAlign: 'center',
+        lineHeight: "0",
     }
 });
