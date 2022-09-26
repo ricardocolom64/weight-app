@@ -1,11 +1,14 @@
 import React from 'react'
 
+import { NavigationContainer } from '@react-navigation/native';
+
 import { Pressable, Text, Box, HStack, VStack, Spacer, Progress, Center, NativeBaseProvider, ChevronRightIcon } from "native-base";
 
-export default function BenchExercise() {
+export default function BenchExercise({navigation}) {
     return (
         <Box alignItems="center" marginBottom={2}>
-            <Pressable width="100%">
+            {/* {console.log(navigation)} */}
+            <Pressable width="100%" onPress={() => navigation.navigate('DetailsScreen')}>
                 {({
                     isHovered,
                     isPressed,

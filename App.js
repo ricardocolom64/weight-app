@@ -13,10 +13,7 @@ import NativeConstants from 'expo-constants';
 
 import { NativeBaseProvider } from "native-base";
 
-import WeightCalculator from './components/WeightCalculator';
 import Home from './screens/Home';
-import DaysAndExercises from './components/DaysAndExercises';
-//import TopBar from './components/TopBar';
 
 function TopBar() {
   return (
@@ -39,7 +36,6 @@ function HomeScreen() {
   return (
     <View flex="1">
       <StatusBar />
-
       <Home />
     </View>
   );

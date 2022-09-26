@@ -14,7 +14,7 @@ const darkBg = "#262626";
 
 export default function WeightCalculator() {
 
-    const defWeightAmts = [
+    const defWeights = [
         { type: 45, height: 64, width: 10, amt: 0 },
         { type: 25, height: 48, width: 8, amt: 0 },
         { type: 10, height: 32, width: 8, amt: 0 },
@@ -22,28 +22,24 @@ export default function WeightCalculator() {
         { type: 2.5, height: 12, width: 6, amt: 0 },
     ]
 
-
-
     const [inpWeight, setInpWeight] = useState(0);
-    const [weights, setWeights] = useState("");
 
-    const [weightAmts, setWeightAmts] = useState([]);
+    const [weights, setWeights] = useState([]);
 
     const {
         colorMode,
         toggleColorMode
     } = useColorMode();
 
-
     function calcWeights() {
-        setWeightAmts([]);
+        setWeights([]);
 
         if (inpWeight > barWeight) {
             var onBar = (inpWeight - barWeight) * 0.5;
 
-            var toWeightAmts = [];
+            var toweights = [];
 
-            defWeightAmts.forEach(currWeight => {
+            defWeights.forEach(currWeight => {
 
                 var currAmt = 0;
 
@@ -53,28 +49,28 @@ export default function WeightCalculator() {
                 }
 
                 if (currAmt > 0) {
-                    toWeightAmts.push({ type: currWeight.type, height: currWeight.height, width: currWeight.width, amt: currAmt });
+                    toweights.push({ type: currWeight.type, height: currWeight.height, width: currWeight.width, amt: currAmt });
                 }
 
                 currAmt = 0;
             });
 
-            setWeightAmts((arr) => toWeightAmts)
+            setWeights((arr) => toweights)
         }
     }
 
-    function placeWeightsLeft(weightAmtsCopy) {
+    function placeWeightsLeft(weightsCopy) {
         var dist = 60;
 
-        return (weightAmtsCopy.map((props) => 
+        return (weightsCopy.map((props) => 
             [...Array(props.amt)].map((elem, i) => <Box backgroundColor="muted.500" borderWidth="1" width={props.width + "px"} height={props.height + "px"} borderRadius="2" position="absolute" left={(dist -= props.width) + "px"} />)
         ));
     }
 
-    function placeWeightsRight(weightAmtsCopy) {
+    function placeWeightsRight(weightsCopy) {
         var dist = 60;
 
-        return (weightAmtsCopy.map((props) => 
+        return (weightsCopy.map((props) => 
             [...Array(props.amt)].map((elem, i) => <Box backgroundColor="muted.500" borderWidth="1" width={props.width + "px"} height={props.height + "px"} borderRadius="2" position="absolute" right={(dist -= props.width) + "px"} />)
         ));
     }
@@ -93,14 +89,13 @@ export default function WeightCalculator() {
                             <Box backgroundColor="muted.300" borderWidth="1" width={280} height={1.5} borderRadius="2" />
                             <Box backgroundColor="muted.300" borderWidth="1" width={1.5} height={5} position="absolute" left={"60px"} />
                             <Box backgroundColor="muted.300" borderWidth="1" width={1.5} height={5} position="absolute" right={"60px"} />
-
-                            {placeWeightsLeft(weightAmts)}
-                            {placeWeightsRight(weightAmts)}
+                            {placeWeightsLeft(weights)}
+                            {placeWeightsRight(weights)}
                         </Box>
                     </View>
                     <View style={styles.inpAndOut}>
                         <View style={styles.output} borderColor={useColorModeValue(lightBorder, darkBorder)}>
-                            {weightAmts.map((props) =>
+                            {weights.map((props) =>
                                 <Text style={[styles.outputText, { color: useColorModeValue("black", "white") }]} key={props.type}>
                                     {props.type + " lb x " + props.amt}
                                 </Text>)}

@@ -4,18 +4,18 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Pressable, Text, Box, HStack, Spacer, ScrollView, Badge, Center, NativeBaseProvider } from "native-base";
 import Constants from 'expo-constants';
 
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+
 import BenchExercise from './BenchExercise';
 
-const MondayRoute = () => (
+
+const Stack = createNativeStackNavigator();
+
+const MondayRoute = ({ navigation }) => (
   <View style={[styles.container]}>
     <ScrollView style={styles.dayExercises}>
-      <BenchExercise/>
-      <BenchExercise/>
-      <BenchExercise/>
-      <BenchExercise/>
-      <BenchExercise/>
-      <BenchExercise/>
-      <BenchExercise/>
+      <BenchExercise navigation={navigation} />
     </ScrollView>
 
   </View>
@@ -33,7 +33,7 @@ const FridayRoute = () => (
   <View style={[styles.container, { backgroundColor: 'khaki' }]} />
 );
 
-export default function DaysAndExercises() {
+function DaysAndExercisesScreen({ navigation }) {
 
   //const handleIndexChange = (index) => setState({ index });
 
@@ -58,7 +58,7 @@ export default function DaysAndExercises() {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'monday':
-        return <MondayRoute />;
+        return <MondayRoute navigation={navigation} />;
       case 'tuesday':
         return <TuesdayRoute />;
       case 'wednesday':
@@ -81,6 +81,27 @@ export default function DaysAndExercises() {
       tabBarPosition='bottom'
       style={styles.tabView}
     />
+  );
+
+}
+
+function DetailsScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+    </View>
+  );
+}
+
+export default function DaysAndExercises({ navigation }) {
+
+  return (
+    <NavigationContainer independent={true}>
+      <Stack.Navigator initialRouteName='DaysAndExercisesScreen'>
+        <Stack.Screen name="DaysAndExercisesScreen" component={DaysAndExercisesScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
