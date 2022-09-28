@@ -2,13 +2,15 @@ import React from 'react'
 
 import { NavigationContainer } from '@react-navigation/native';
 
-import { Pressable, Text, Box, HStack, VStack, Spacer, Progress, Center, NativeBaseProvider, ChevronRightIcon } from "native-base";
+import { Pressable, Text, Box, HStack, VStack, Spacer, Progress, Center, NativeBaseProvider, ChevronRightIcon, Button, Divider, Input, IconButton, CheckIcon, CloseIcon, ArrowForwardIcon } from "native-base";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function BenchExercise({navigation}) {
+export default function ExerciseCard(props) {
+
     return (
         <Box alignItems="center" marginBottom={2}>
             {/* {console.log(navigation)} */}
-            <Pressable width="100%" onPress={() => navigation.navigate('DetailsScreen')}>
+            <Pressable width="100%" onPress={() => props.navigation.navigate('DetailsScreen')}>
                 {({
                     isHovered,
                     isPressed,
@@ -18,7 +20,7 @@ export default function BenchExercise({navigation}) {
                         <HStack alignItems="center" borderWidth="0">
                             <VStack>
                                 <Text color="coolGray.800" fontWeight="medium" fontSize="md" lineHeight="xs">
-                                    Bench
+                                    {props.name + ""}
                                 </Text>
                                 <Text fontSize="sm" color="coolGray.400">
                                     0 of 9 sets finished
@@ -26,7 +28,7 @@ export default function BenchExercise({navigation}) {
                             </VStack>
                             <Spacer />
                             <Text fontSize={10} color="coolGray.800">
-                                <ChevronRightIcon color="coolGray.300"/>
+                                <ChevronRightIcon color="coolGray.300" />
                             </Text>
                         </HStack>
 
