@@ -10,7 +10,7 @@ export default function ExerciseCard(props) {
     return (
         <Box alignItems="center" marginBottom={2}>
             {/* {console.log(navigation)} */}
-            <Pressable width="100%" onPress={() => props.navigation.navigate('DetailsScreen')}>
+            <Pressable width="100%" onPress={() => props.navigation.navigate('DetailsScreen', {exercise: props.exercise})}>
                 {({
                     isHovered,
                     isPressed,
@@ -20,10 +20,10 @@ export default function ExerciseCard(props) {
                         <HStack alignItems="center" borderWidth="0">
                             <VStack>
                                 <Text color="coolGray.800" fontWeight="medium" fontSize="md" lineHeight="xs">
-                                    {props.name + ""}
+                                    {props.exercise.name + ""}
                                 </Text>
                                 <Text fontSize="sm" color="coolGray.400">
-                                    0 of 9 sets finished
+                                    {props.done} of {props.exercise.repsAndMaxPercents.length} sets finished
                                 </Text>
                             </VStack>
                             <Spacer />
