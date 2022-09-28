@@ -5,6 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Pressable, Text, Box, HStack, VStack, Spacer, Progress, Center, NativeBaseProvider, ChevronRightIcon, Button, Divider, Input, IconButton, CheckIcon, CloseIcon, ArrowForwardIcon } from "native-base";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+function calcPercent(done, total)
+{
+    var result = (done / total) * 100;
+
+    return result;
+}
+
 export default function ExerciseCard(props) {
 
     return (
@@ -32,7 +39,7 @@ export default function ExerciseCard(props) {
                             </Text>
                         </HStack>
 
-                        <Progress bg="coolGray.300" mt="1" size="xs" value={45} _filledTrack={{ bg: "success.500" }} />
+                        <Progress bg="coolGray.300" mt="1" size="xs" value={calcPercent(props.done, props.exercise.repsAndMaxPercents.length)} _filledTrack={{ bg: "success.500" }} />
                     </Box>;
                 }}
             </Pressable>

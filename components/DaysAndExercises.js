@@ -20,7 +20,7 @@ const MondayRoute = ({ navigation }) => (
   <View style={[styles.container]}>
     <ScrollView style={styles.dayExercises}>
       <ExerciseCard navigation={navigation} exercise={exercises[0]} done={3} />
-      <ExerciseCard navigation={navigation} exercise={exercises[1]} done={0} />
+      <ExerciseCard navigation={navigation} exercise={exercises[1]} done={7} />
     </ScrollView>
   </View>
 );
@@ -90,8 +90,8 @@ function DaysAndExercisesScreen({ navigation }) {
 
 }
 
-function RoundToNearest(props) {
-  var result = Math.round(props * 0.2);
+function RoundToNearest(num) {
+  var result = Math.round(num * 0.2);
   return result * 5;
 }
 
@@ -176,7 +176,6 @@ function ExerciseDetails(props) {
 }
 
 function DetailsScreen({ navigation, route }) {
-  {console.log("AHHHH")}
   return (
     <ExerciseDetails navigation={navigation} exercise={route.params.exercise} />
   );
