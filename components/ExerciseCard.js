@@ -16,7 +16,6 @@ export default function ExerciseCard(props) {
 
     return (
         <Box alignItems="center" marginBottom={2}>
-            {/* {console.log(navigation)} */}
             <Pressable width="100%" onPress={() => props.navigation.navigate('DetailsScreen', {exercise: props.exercise})}>
                 {({
                     isHovered,

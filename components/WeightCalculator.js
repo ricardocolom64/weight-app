@@ -37,7 +37,7 @@ export default function WeightCalculator() {
         if (inpWeight > barWeight) {
             var onBar = (inpWeight - barWeight) * 0.5;
 
-            var toweights = [];
+            var toWeights = [];
 
             defWeights.forEach(currWeight => {
 
@@ -49,13 +49,13 @@ export default function WeightCalculator() {
                 }
 
                 if (currAmt > 0) {
-                    toweights.push({ type: currWeight.type, height: currWeight.height, width: currWeight.width, amt: currAmt });
+                    toWeights.push({ type: currWeight.type, height: currWeight.height, width: currWeight.width, amt: currAmt });
                 }
 
                 currAmt = 0;
             });
 
-            setWeights((arr) => toweights)
+            setWeights((arr) => toWeights)
         }
     }
 
