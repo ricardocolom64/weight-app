@@ -64,7 +64,7 @@ export default function DaysAndExercises({ navigation }) {
 
   const [exercises, changeExercises] = React.useState(defaultExercises);
 
-  const [mondayExercises, changeMondayExercises] = React.useState(defaultExercises);
+  const [mondayExercises, changeMondayExercises] = React.useState(defaultMondayExercises);
 
   const Stack = createNativeStackNavigator();
 
