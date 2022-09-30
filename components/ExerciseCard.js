@@ -5,8 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Pressable, Text, Box, HStack, VStack, Spacer, Progress, Center, NativeBaseProvider, ChevronRightIcon, Button, Divider, Input, IconButton, CheckIcon, CloseIcon, ArrowForwardIcon } from "native-base";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-function calcPercent(done, total)
-{
+function calcPercent(done, total) {
     var result = (done / total) * 100;
 
     return result;
@@ -16,7 +15,7 @@ export default function ExerciseCard(props) {
 
     return (
         <Box alignItems="center" marginBottom={2}>
-            <Pressable width="100%" onPress={() => props.navigation.navigate('DetailsScreen', {exercise: props.exercise})}>
+            <Pressable width="100%" onPress={() => props.navigation.navigate('DetailsScreen', { exercise: props.exercise })}>
                 {({
                     isHovered,
                     isPressed,
@@ -29,7 +28,7 @@ export default function ExerciseCard(props) {
                                     {props.exercise.name + ""}
                                 </Text>
                                 <Text fontSize="sm" color="coolGray.400">
-                                    {props.done} of {props.exercise.repsAndMaxPercents.length} sets finished
+                                    {props.exercise.setsCompleted} of {props.exercise.setInfo.length} sets finished
                                 </Text>
                             </VStack>
                             <Spacer />
@@ -38,7 +37,7 @@ export default function ExerciseCard(props) {
                             </Text>
                         </HStack>
 
-                        <Progress bg="coolGray.300" mt="1" size="xs" value={calcPercent(props.done, props.exercise.repsAndMaxPercents.length)} _filledTrack={{ bg: "success.500" }} />
+                        <Progress bg="coolGray.300" mt="1" size="xs" value={calcPercent(props.exercise.setsCompleted, props.exercise.setInfo.length)} _filledTrack={{ bg: "success.500" }} />
                     </Box>;
                 }}
             </Pressable>

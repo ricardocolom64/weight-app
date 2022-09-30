@@ -15,45 +15,53 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 // These should be global exercise definitions
-const defaultExercises = [
+const exerciseDefs = [
   {
     name: "Bench",
     nameInternal: "BenchMonday",
     id: 0,
+    dayOfWeek: "Monday",
     trainingMax: 290,
-    repsAndMaxPercents: [{ reps: 8, percent: 0.65 }, { reps: 6, percent: 0.75 }, { reps: 4, percent: 0.85 }, { reps: 4, percent: 0.85 }, { reps: 4, percent: 0.85 }, { reps: 5, percent: 0.8 }, { reps: 6, percent: 0.75 }, { reps: 6, percent: 0.7 }, { reps: "8+", percent: 0.65 }]
+    setInfoDefs: [{ reps: 8, percent: 0.65 }, { reps: 6, percent: 0.75 }, { reps: 4, percent: 0.85 }, { reps: 4, percent: 0.85 }, { reps: 4, percent: 0.85 }, { reps: 5, percent: 0.8 }, { reps: 6, percent: 0.75 }, { reps: 6, percent: 0.7 }, { reps: "8+", percent: 0.65 }]
   },
   {
     name: "Overhead Press",
     nameInternal: "OverheadPress",
     id: 1,
+    dayOfWeek: "Monday",
     trainingMax: 175,
-    repsAndMaxPercents: [{ reps: 6, percent: 0.50 }, { reps: 5, percent: 0.60 }, { reps: 3, percent: 0.70 }, { reps: 5, percent: 0.70 }, { reps: 7, percent: 0.70 }, { reps: 4, percent: 0.70 }, { reps: 6, percent: 0.70 }, { reps: 8, percent: 0.70 }]
+    setInfoDefs: [{ reps: 6, percent: 0.50 }, { reps: 5, percent: 0.60 }, { reps: 3, percent: 0.70 }, { reps: 5, percent: 0.70 }, { reps: 7, percent: 0.70 }, { reps: 4, percent: 0.70 }, { reps: 6, percent: 0.70 }, { reps: 8, percent: 0.70 }]
   },
   {
     name: "Squat",
     nameInternal: "Squat",
     id: 2,
+    dayOfWeek: "Tuesday",
     trainingMax: 300,
-    repsAndMaxPercents: [{ reps: 5, percent: 0.75 }, { reps: 3, percent: 0.85 }, { reps: "1+", percent: 0.95 }, { reps: 3, percent: 0.90 }, { reps: 3, percent: 0.85 }, { reps: 3, percent: 0.80 }, { reps: 5, percent: 0.75 }, { reps: 5, percent: 0.70 }, { reps: "5+", percent: 0.65 }]
+    setInfoDefs: [{ reps: 5, percent: 0.75 }, { reps: 3, percent: 0.85 }, { reps: "1+", percent: 0.95 }, { reps: 3, percent: 0.90 }, { reps: 3, percent: 0.85 }, { reps: 3, percent: 0.80 }, { reps: 5, percent: 0.75 }, { reps: 5, percent: 0.70 }, { reps: "5+", percent: 0.65 }]
   }
 ]
 
-const defaultMondayExercises = [
+const sampleMondayExercises = [
   {
     name: "Bench",
     nameInternal: "BenchMonday",
     id: 0,
+    dayOfWeek: "Monday",
     trainingMax: 290,
-    done: 0,
+    setInfo: [{ reps: 8, percent: 0.65, repsDone: 0 }, { reps: 6, percent: 0.75, repsDone: 0 }, { reps: 4, percent: 0.85, repsDone: 0 }, { reps: 4, percent: 0.85, repsDone: 0 }, { reps: 4, percent: 0.85, repsDone: 0 }, { reps: 5, percent: 0.8, repsDone: 0 }, { reps: 6, percent: 0.75, repsDone: 0 }, { reps: 6, percent: 0.7, repsDone: 0 }, { reps: "8+", percent: 0.65, repsDone: 0 }],
+    setsCompleted: 0,
   },
   {
     name: "Overhead Press",
     nameInternal: "OverheadPress",
     id: 1,
+    dayOfWeek: "Monday",
     trainingMax: 175,
-    done: 0,
-  }]
+    setInfo: [{ reps: 6, percent: 0.50, repsDone: 0 }, { reps: 5, percent: 0.60, repsDone: 0 }, { reps: 3, percent: 0.70, repsDone: 0 }, { reps: 5, percent: 0.70, repsDone: 0 }, { reps: 7, percent: 0.70, repsDone: 0 }, { reps: 4, percent: 0.70, repsDone: 0 }, { reps: 6, percent: 0.70, repsDone: 0 }, { reps: 8, percent: 0.70, repsDone: 0 }],
+    setsCompleted: 0,
+  }
+]
 
 function RoundToNearest(num) {
   var result = Math.round(num * 0.2);
@@ -62,24 +70,37 @@ function RoundToNearest(num) {
 
 export default function DaysAndExercises({ navigation }) {
 
-  const [exercises, changeExercises] = React.useState(defaultExercises);
+  const [exercises, changeExercises] = React.useState(sampleMondayExercises);
 
-  const [mondayExercises, changeMondayExercises] = React.useState(defaultMondayExercises);
+  const [mondayExercises, changeMondayExercises] = React.useState(sampleMondayExercises);
 
   const Stack = createNativeStackNavigator();
+
+  /*
+    Even though mondayExercises does indeed update its contents like it should, ExerciseCard only re-retrieves the information on re-render.
+
+    Meaning that it seems ExerciseCard is only being visually updated when it is forced to re-render. AKA when it is pressed or on its first load in general.
+
+    The solution:
+
+    *** -> Find a way to re-render ExerciseCard or maybe even MondayRoute. <- ***
+
+    Shouldn't be an issue, except useEffect on mondayExercises is never fired, probably because changeMondayExercises isn't ever directly called.
+  */
 
   const MondayRoute = ({ navigation }) => (
     <View style={[styles.container]}>
       <ScrollView style={styles.dayExercises}>
-        <ExerciseCard navigation={navigation} exercise={exercises[0]} done={3} />
-        <ExerciseCard navigation={navigation} exercise={exercises[1]} done={7} />
+        <ExerciseCard navigation={navigation} exercise={mondayExercises[0]} />
+        <ExerciseCard navigation={navigation} exercise={mondayExercises[1]} />
+        <Button onPress={() => { console.log(mondayExercises) }} />
       </ScrollView>
     </View>
   );
   const TuesdayRoute = ({ navigation }) => (
     <View style={[styles.container]}>
       <ScrollView style={styles.dayExercises}>
-        <ExerciseCard navigation={navigation} exercise={exercises[2]} done={5} />
+        <ExerciseCard navigation={navigation} exercise={mondayExercises[1]} />
       </ScrollView>
     </View>
   );
@@ -148,16 +169,14 @@ export default function DaysAndExercises({ navigation }) {
     const [currTrainingMax, changeCurrTrainingMax] = React.useState(props.exercise.trainingMax);
 
     const handleExerciseDetailsGoBack = () => {
-      props.navigation.goBack();
+      props.navigation.goBack();      
     }
 
     const handleChangeTrainingMax = (newTrainingMax) => {
-      console.log(newTrainingMax);
       changeCurrTrainingMax(newTrainingMax);
 
       exercises.forEach(element => {
         if (element.id == props.exercise.id) {
-          console.log("New training max for " + element.name + " -> " + newTrainingMax);
           props.exercise.trainingMax = newTrainingMax;
         }
 
@@ -166,10 +185,28 @@ export default function DaysAndExercises({ navigation }) {
 
     // This handles the display for each working set and its respective reps for an exercise
     function SetAndReps(props) {
-      return (
-        props.exercise.repsAndMaxPercents.map((currentSet, i) => {
 
-          const [repsCompleted, changeRepsCompleted] = React.useState(0);
+      return (
+        props.exercise.setInfo.map((currentSet, i) => {
+
+          const [repsCompleted, changeRepsCompleted] = React.useState(currentSet.repsDone);
+
+          const handleChangeRepsCompleted = (text) => {
+            changeRepsCompleted(text);
+
+            if (Number.isInteger(+text)) {
+              currentSet.repsDone = +text;
+
+              var setsCompleted = 0;
+
+              props.exercise.setInfo.forEach(element => {
+                if (element.repsDone >= element.reps)
+                  setsCompleted++;
+              });
+
+              props.exercise.setsCompleted = setsCompleted;
+            }
+          }
 
           function currentSetStatus() {
             if (repsCompleted > 0 && repsCompleted < currentSet.reps) {
@@ -204,7 +241,7 @@ export default function DaysAndExercises({ navigation }) {
             }
           }
 
-          function handleButtonPress() {
+          function handleSetButtonPress() {
             if (currentSetStatus() == "initial") {
               changeRepsCompleted(currentSet.reps);
             }
@@ -224,9 +261,9 @@ export default function DaysAndExercises({ navigation }) {
             <Divider orientation='vertical' thickness="0" />
             <Spacer />
             <Box width="128px" flexDirection="row" alignItems="center" justifyContent="center">
-              <Input width="48px" p="2" mx="3" value={repsCompleted + ""} onChangeText={changeRepsCompleted} textAlign={"center"} focusOutlineColor="success.500" keyboardType={'numeric'}
+              <Input width="48px" p="2" mx="3" value={repsCompleted + ""} onChangeText={handleChangeRepsCompleted} textAlign={"center"} focusOutlineColor="success.500" keyboardType={'numeric'}
                 maxLength="3" variant="outline" bg="white" />
-              <IconButton position="absolute" right="-36px" size="md" icon={currentSetIcon()} onPress={() => { handleButtonPress() }} />
+              <IconButton position="absolute" right="-36px" size="md" icon={currentSetIcon()} onPress={() => { handleSetButtonPress() }} />
             </Box>
             <Spacer />
           </Box>)
