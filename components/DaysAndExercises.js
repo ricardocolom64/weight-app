@@ -76,27 +76,18 @@ export default function DaysAndExercises({ navigation }) {
 
   const Stack = createNativeStackNavigator();
 
-  /*
-    Even though mondayExercises does indeed update its contents like it should, ExerciseCard only re-retrieves the information on re-render.
+  const MondayRoute = (props) => {
 
-    Meaning that it seems ExerciseCard is only being visually updated when it is forced to re-render. AKA when it is pressed or on its first load in general.
-
-    The solution:
-
-    *** -> Find a way to re-render ExerciseCard or maybe even MondayRoute. <- ***
-
-    Shouldn't be an issue, except useEffect on mondayExercises is never fired, probably because changeMondayExercises isn't ever directly called.
-  */
-
-  const MondayRoute = ({ navigation }) => (
-    <View style={[styles.container]}>
-      <ScrollView style={styles.dayExercises}>
-        <ExerciseCard navigation={navigation} exercise={mondayExercises[0]} />
-        <ExerciseCard navigation={navigation} exercise={mondayExercises[1]} />
-        <Button onPress={() => { console.log(mondayExercises) }} />
-      </ScrollView>
-    </View>
-  );
+    return (
+      <View style={[styles.container]}>
+        <ScrollView style={styles.dayExercises}>
+          <ExerciseCard navigation={props.navigation} exercise={props.routeExercises[0]} />
+          <ExerciseCard navigation={props.navigation} exercise={props.routeExercises[1]} />
+          <Button onPress={() => { console.log(mondayExercises) }} />
+        </ScrollView>
+      </View>
+    )
+  };
   const TuesdayRoute = ({ navigation }) => (
     <View style={[styles.container]}>
       <ScrollView style={styles.dayExercises}>
@@ -115,6 +106,7 @@ export default function DaysAndExercises({ navigation }) {
   );
 
   function DaysAndExercisesScreen({ navigation }) {
+
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
       { key: 'monday', title: 'M' },
@@ -124,19 +116,28 @@ export default function DaysAndExercises({ navigation }) {
       { key: 'friday', title: 'F' },
     ])
 
-    const renderTabBar = props => (
-      <TabBar
-        {...props}
-        indicatorStyle={styles.tabIndicator}
-        labelStyle={styles.tabLabel}
-        style={styles.tabBar}
-      />
-    );
+    /*
+    
+    This forces the DaysAndExercisesScreen to re-render whenever it is navigated back to.
 
+    This is useful because the exersice card data now visually updates when it should.
+
+
+    The dummy state hook literally just exists for the purpose of reloading the entire component.
+
+    */
+
+    const [dummy, changeDummy] = React.useState(0);      
+
+    const forceUpdate = navigation.addListener('focus', () => {
+      changeDummy(dummy + 1);
+    })
+    
     const renderScene = ({ route }) => {
+    
       switch (route.key) {
         case 'monday':
-          return <MondayRoute navigation={navigation} />;
+          return <MondayRoute navigation={navigation} routeExercises={mondayExercises} />;
         case 'tuesday':
           return <TuesdayRoute navigation={navigation} />;
         case 'wednesday':
@@ -149,6 +150,17 @@ export default function DaysAndExercises({ navigation }) {
           return null;
       }
     };
+
+    const renderTabBar = props => (
+      <TabBar
+        {...props}
+        indicatorStyle={styles.tabIndicator}
+        labelStyle={styles.tabLabel}
+        style={styles.tabBar}
+      />
+    );
+
+
 
     return (
       <TabView
@@ -169,7 +181,8 @@ export default function DaysAndExercises({ navigation }) {
     const [currTrainingMax, changeCurrTrainingMax] = React.useState(props.exercise.trainingMax);
 
     const handleExerciseDetailsGoBack = () => {
-      props.navigation.goBack();      
+      console.log("going back");
+      props.navigation.goBack();
     }
 
     const handleChangeTrainingMax = (newTrainingMax) => {
