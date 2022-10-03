@@ -63,7 +63,7 @@ export default function WeightCalculator() {
         var dist = 60;
 
         return (weightsCopy.map((props) => 
-            [...Array(props.amt)].map((elem, i) => <Box backgroundColor="muted.500" borderWidth="1" width={props.width + "px"} height={props.height + "px"} borderRadius="2" position="absolute" left={(dist -= props.width) + "px"} />)
+            [...Array(props.amt)].map((elem, i) => <Box backgroundColor="muted.600" borderWidth="1" width={props.width + "px"} height={props.height + "px"} borderRadius="2" position="absolute" left={(dist -= props.width - 1) + "px"} />)
         ));
     }
 
@@ -71,7 +71,7 @@ export default function WeightCalculator() {
         var dist = 60;
 
         return (weightsCopy.map((props) => 
-            [...Array(props.amt)].map((elem, i) => <Box backgroundColor="muted.500" borderWidth="1" width={props.width + "px"} height={props.height + "px"} borderRadius="2" position="absolute" right={(dist -= props.width) + "px"} />)
+            [...Array(props.amt)].map((elem, i) => <Box backgroundColor="muted.600" borderWidth="1" width={props.width + "px"} height={props.height + "px"} borderRadius="2" position="absolute" right={(dist -= props.width - 1) + "px"} />)
         ));
     }
 
@@ -126,8 +126,9 @@ export default function WeightCalculator() {
 const styles = StyleSheet.create({
     main: {
         flex: 1,
-        margin: 6,
+        padding: 6,
         maxHeight: 240,
+        backgroundColor: "#F5F5F5",
     },
     mainContent: {
         flex: 1,

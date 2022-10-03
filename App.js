@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, StyleSheet, TextInput, TouchableWithoutFeedback } from 'react-native';
 
-import { Text, Button, Avatar, Box } from 'native-base'
+import { View, Text, Button, Avatar, Box } from 'native-base'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,28 +15,11 @@ import { NativeBaseProvider } from "native-base";
 
 import Home from './screens/Home';
 
-function TopBar() {
-  return (
-    <Button borderRadius={"8"} padding="1" colorScheme="light" variant="ghost">
-      <Box justifyContent="center" alignItems="center" width="190">
-        <Text fontWeight={"bold"} fontSize="md">September 24, 2022</Text>
-        <Text fontSize="xs" color="grey">(Current)</Text>
-      </Box>
-    </Button>
-  );
-}
-
-function ProfilePicture() {
-  return (
-    <Avatar bg="black" size={"sm"}>R</Avatar>
-  )
-}
-
 function HomeScreen() {
   return (
     <View flex="1">
       <StatusBar />
-      <Home />
+      <Home/>
     </View>
   );
 }
@@ -55,16 +38,13 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator screenOptions={{
-      headerStyle: { height: 100 }, tabBarShowLabel: false, tabBarStyle: { height: 82 }
+      headerStyle: { height: 102.2 }, tabBarShowLabel: false, tabBarStyle: { height: 82 }
     }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          headerTitle: (props) => <TopBar {...props} />,
-          headerRight: (props) => <ProfilePicture {...props} />,
-          headerTitleContainerStyle: styles.header,
-          headerRightContainerStyle: styles.headerRight,
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons name={focused ? "home" : "home-outline"} color={"black"} size={32} />
           ),
@@ -102,6 +82,8 @@ const styles = StyleSheet.create({
   },
   header: {
     //backgroundColor: "green",
+  },
+  home: {
   },
   headerRight: {
     //backgroundColor: "red",

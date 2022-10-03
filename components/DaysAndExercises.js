@@ -7,8 +7,6 @@ import Constants from 'expo-constants';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-//import { exercises } from './AllExercises';
-
 import ExerciseCard from './ExerciseCard';
 import { Details } from './ExerciseCard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -378,5 +376,6 @@ const styles = StyleSheet.create({
   },
   tabView: {
     flex: 1,
+    backgroundColor: "#F5F5F5"
   }
 });
