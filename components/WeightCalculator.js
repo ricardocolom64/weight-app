@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 6,
         maxHeight: 240,
-        backgroundColor: "#F5F5F5",
+        backgroundColor: "inherit"
     },
     mainContent: {
         flex: 1,

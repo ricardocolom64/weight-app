@@ -167,7 +167,7 @@ export default function DaysAndExercises({ navigation }) {
         renderTabBar={renderTabBar}
         onIndexChange={setIndex}
         tabBarPosition='bottom'
-        style={styles.tabView}
+        style={{backgroundColor: "transparent"}}
       />
     );
 
@@ -374,8 +374,4 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
-  tabView: {
-    flex: 1,
-    backgroundColor: "#F5F5F5"
-  }
 });
