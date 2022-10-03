@@ -256,10 +256,10 @@ export default function DaysAndExercises({ navigation }) {
 
           function handleSetButtonPress() {
             if (currentSetStatus() == "initial") {
-              changeRepsCompleted(currentSet.reps);
+              handleChangeRepsCompleted(currentSet.reps);
             }
             else {
-              changeRepsCompleted(0);
+              handleChangeRepsCompleted(0);
             }
           }
 
