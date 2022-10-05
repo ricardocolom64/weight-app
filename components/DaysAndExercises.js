@@ -151,11 +151,11 @@ export default function DaysAndExercises({ navigation }) {
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-      { key: 'monday', title: 'M' },
-      { key: 'tuesday', title: 'T' },
-      { key: 'wednesday', title: 'W' },
-      { key: 'thursday', title: 'T' },
-      { key: 'friday', title: 'F' },
+      { key: 'monday', title: 'Mon' },
+      { key: 'tuesday', title: 'tue' },
+      { key: 'wednesday', title: 'wed' },
+      { key: 'thursday', title: 'thu' },
+      { key: 'friday', title: 'fri' },
     ])
 
 
@@ -433,15 +433,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
   tabBar: {
-    backgroundColor: 'lightblue',
+    backgroundColor: 'white',
   },
   tabIndicator: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
 
   },
   tabLabel: {
     fontSize: 12,
     textTransform: 'capitalize',
+    color: "black",
     margin: 0,
     padding: 0,
   },
