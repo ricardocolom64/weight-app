@@ -64,17 +64,9 @@ export const globalExerciseDefs = [
         setInfoDefs: [{ reps: 5, percent: 0.35 }, { reps: 5, percent: 0.45 }, { reps: 3, percent: 0.55 }, { reps: 5, percent: 0.55 }, { reps: 7, percent: 0.55 }, { reps: 4, percent: 0.55 }, { reps: 6, percent: 0.55 }, { reps: 8, percent: 0.55 }]
     },
     {
-        name: "Front Squat",
-        nameInternal: "Front Squat",
-        id: 8,
-        dayOfWeek: "Thursday",
-        trainingMax: 305,
-        setInfoDefs: [{ reps: 5, percent: 0.35 }, { reps: 5, percent: 0.45 }, { reps: 3, percent: 0.55 }, { reps: 5, percent: 0.55 }, { reps: 7, percent: 0.55 }, { reps: 4, percent: 0.55 }, { reps: 6, percent: 0.55 }, { reps: 8, percent: 0.55 }]
-    },
-    {
         name: "Bench",
         nameInternal: "BenchFriday",
-        id: 9,
+        id: 8,
         dayOfWeek: "Friday",
         trainingMax: 290,
         setInfoDefs: [{ reps: 5, percent: 0.75 }, { reps: 3, percent: 0.85 }, { reps: "1+", percent: 0.95 }, { reps: 3, percent: 0.90 }, { reps: 5, percent: 0.85 }, { reps: 3, percent: 0.80 }, { reps: 5, percent: 0.75 }, { reps: 3, percent: 0.70 }, { reps: "5+", percent: 0.65 }]
@@ -82,7 +74,7 @@ export const globalExerciseDefs = [
     {
         name: "Close Grip Bench",
         nameInternal: "CloseGripBench",
-        id: 10,
+        id: 9,
         dayOfWeek: "Friday",
         trainingMax: 290,
         setInfoDefs: [{ reps: 6, percent: 0.40 }, { reps: 5, percent: 0.50 }, { reps: 3, percent: 0.60 }, { reps: 5, percent: 0.60 }, { reps: 7, percent: 0.60 }, { reps: 4, percent: 0.60 }, { reps: 6, percent: 0.60 }, { reps: 8, percent: 0.60 }]

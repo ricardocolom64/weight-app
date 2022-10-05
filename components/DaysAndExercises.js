@@ -40,14 +40,17 @@ function RoundToNearest(num) {
 
 function getExercisesForThisWeekday(day) {
 
-  console.log("---------------------------")
-
-  const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
+  console.log("Getting exercises for " + day + "...")
 
   var result = [];
 
   globalExerciseDefs.forEach(globalExerciseDefElement => {
     if (globalExerciseDefElement.dayOfWeek == day) {
+
+      const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
+
+      console.log(defaultExerciseInfo);
+
       var thisDayExercise = defaultExerciseInfo;
       thisDayExercise.name = globalExerciseDefElement.name;
       thisDayExercise.nameInternal = globalExerciseDefElement.nameInternal;
@@ -55,30 +58,26 @@ function getExercisesForThisWeekday(day) {
       thisDayExercise.dayOfWeek = globalExerciseDefElement.dayOfWeek;
       thisDayExercise.trainingMax = globalExerciseDefElement.trainingMax;
 
-      //console.log(globalExerciseDefElement.name + " exercise setInfo: ")
-
       var toThisDaySetInfo = [];
 
       // Iterates through the globalExerciseDefs to populate this day's setInfo with the necessarry "reps", "percent" and adds a "done" of 0.
       globalExerciseDefElement.setInfoDefs.forEach(globalSetInfoDefElement => {
 
-        const defaultSetInfoElement = { reps: 0, percent: 0.00, done: 0 };
+        const defaultSetInfoElement = { reps: 0, percent: 0.00, repsDone: 0 };
 
         var thisDaySetInfoElement = defaultSetInfoElement;
-        //console.log(thisDaySetInfoElement)
 
         thisDaySetInfoElement.reps = globalSetInfoDefElement.reps;
         thisDaySetInfoElement.percent = globalSetInfoDefElement.percent;
 
-        //console.log(thisDaySetInfoElement)
         toThisDaySetInfo.push(thisDaySetInfoElement)
       });
 
       thisDayExercise.setInfo = toThisDaySetInfo;
 
-      console.log(thisDayExercise);
-
       result.push(thisDayExercise);
+
+      console.log(thisDayExercise.name + "...")
     }
   });
 
@@ -87,41 +86,65 @@ function getExercisesForThisWeekday(day) {
 
 export default function DaysAndExercises({ navigation }) {
 
-  const [exercises, changeExercises] = React.useState(sampleMondayExercises);
+  const [mondayExercises, changeMondayExercises] = React.useState(getExercisesForThisWeekday("Monday"));
 
-  const [mondayExercises, changeMondayExercises] = React.useState(sampleMondayExercises);
+  const [tuesdayExercises, changeTuesdayExercises] = React.useState(getExercisesForThisWeekday("Tuesday"));
 
-  getExercisesForThisWeekday("Tuesday");
+  const [wednesdayExercises, changeWednesdayExercises] = React.useState(getExercisesForThisWeekday("Wednesday"));
+
+  const [thursdayExercises, changeThursdayExercises] = React.useState(getExercisesForThisWeekday("Thursday"));
+
+  const [fridayExercises, changeFridayExercises] = React.useState(getExercisesForThisWeekday("Friday"));
+
 
   const Stack = createNativeStackNavigator();
 
-  const MondayRoute = (props) => {
+  const MondayRoute = ({ navigation }) => (
+    <View flex="1">
+      <ScrollView mx="6px">
+        {mondayExercises.map((currExercise, i) => {
+          return (<ExerciseCard navigation={navigation} exercise={currExercise} key={i} />)
+        })}
+        {/* <Button onPress={() => { console.log(mondayExercises) }} /> */}
+      </ScrollView>
+    </View>
+  );
 
-    return (
-      <View style={[styles.container]}>
-        <ScrollView style={styles.dayExercises}>
-          <ExerciseCard navigation={props.navigation} exercise={props.exercises[0]} />
-          <ExerciseCard navigation={props.navigation} exercise={props.exercises[1]} />
-          <Button onPress={() => { console.log(mondayExercises) }} />
-        </ScrollView>
-      </View>
-    )
-  };
   const TuesdayRoute = ({ navigation }) => (
-    <View style={[styles.container]}>
-      <ScrollView style={styles.dayExercises}>
-        <ExerciseCard navigation={navigation} exercise={mondayExercises[1]} />
+    <View flex="1">
+      <ScrollView mx="6px">
+        {tuesdayExercises.map((currExercise, i) => {
+          return (<ExerciseCard navigation={navigation} exercise={currExercise} key={i} />)
+        })}
       </ScrollView>
     </View>
   );
   const WednesdayRoute = ({ navigation }) => (
-    <View style={[styles.container, { backgroundColor: 'dodgerblue' }]} />
+    <View flex="1">
+      <ScrollView mx="6px">
+        {wednesdayExercises.map((currExercise, i) => {
+          return (<ExerciseCard navigation={navigation} exercise={currExercise} key={i} />)
+        })}
+      </ScrollView>
+    </View>
   );
   const ThursdayRoute = ({ navigation }) => (
-    <View style={[styles.container, { backgroundColor: 'darksalmon' }]} />
+    <View flex="1">
+      <ScrollView mx="6px">
+        {thursdayExercises.map((currExercise, i) => {
+          return (<ExerciseCard navigation={navigation} exercise={currExercise} key={i} />)
+        })}
+      </ScrollView>
+    </View>
   );
   const FridayRoute = ({ navigation }) => (
-    <View style={[styles.container, { backgroundColor: 'khaki' }]} />
+    <View flex="1">
+      <ScrollView mx="6px">
+        {fridayExercises.map((currExercise, i) => {
+          return (<ExerciseCard navigation={navigation} exercise={currExercise} key={i} />)
+        })}
+      </ScrollView>
+    </View>
   );
 
   function DaysAndExercisesScreen({ navigation }) {
@@ -154,7 +177,7 @@ export default function DaysAndExercises({ navigation }) {
 
       switch (route.key) {
         case 'monday':
-          return <MondayRoute navigation={navigation} exercises={mondayExercises} />;
+          return <MondayRoute navigation={navigation} />;
         case 'tuesday':
           return <TuesdayRoute navigation={navigation} />;
         case 'wednesday':
@@ -201,15 +224,45 @@ export default function DaysAndExercises({ navigation }) {
       props.navigation.goBack();
     }
 
+    // Iterate through the appropriate day's exercise hook (such as mondayExercises) to find the specific exercise that needs its trainingMax changed.
     const handleChangeTrainingMax = (newTrainingMax) => {
       changeCurrTrainingMax(newTrainingMax);
 
-      exercises.forEach(element => {
-        if (element.id == props.exercise.id) {
-          props.exercise.trainingMax = newTrainingMax;
-        }
-
-      });
+      if (props.exercise.dayOfWeek == "Monday") {
+        mondayExercises.forEach(element => {
+          if (element.id == props.exercise.id) {
+            element.trainingMax = newTrainingMax;
+          }
+        });
+      }
+      else if (props.exercise.dayOfWeek == "Tuesday") {
+        tuesdayExercises.forEach(element => {
+          if (element.id == props.exercise.id) {
+            element.trainingMax = newTrainingMax;
+          }
+        });
+      }
+      else if (props.exercise.dayOfWeek == "Wednesday") {
+        wednesdayExercises.forEach(element => {
+          if (element.id == props.exercise.id) {
+            element.trainingMax = newTrainingMax;
+          }
+        });
+      }
+      else if (props.exercise.dayOfWeek == "Thursday") {
+        thursdayExercises.forEach(element => {
+          if (element.id == props.exercise.id) {
+            element.trainingMax = newTrainingMax;
+          }
+        });
+      }
+      else if (props.exercise.dayOfWeek == "Friday") {
+        fridayExercises.forEach(element => {
+          if (element.id == props.exercise.id) {
+            element.trainingMax = newTrainingMax;
+          }
+        });
+      }
     }
 
     // This handles the display for each working set and its respective reps for an exercise
