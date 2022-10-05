@@ -10,35 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import ExerciseCard from './ExerciseCard';
 import { Details } from './ExerciseCard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-
-// These should be global exercise definitions
-const exerciseDefs = [
-  {
-    name: "Bench",
-    nameInternal: "BenchMonday",
-    id: 0,
-    dayOfWeek: "Monday",
-    trainingMax: 290,
-    setInfoDefs: [{ reps: 8, percent: 0.65 }, { reps: 6, percent: 0.75 }, { reps: 4, percent: 0.85 }, { reps: 4, percent: 0.85 }, { reps: 4, percent: 0.85 }, { reps: 5, percent: 0.8 }, { reps: 6, percent: 0.75 }, { reps: 6, percent: 0.7 }, { reps: "8+", percent: 0.65 }]
-  },
-  {
-    name: "Overhead Press",
-    nameInternal: "OverheadPress",
-    id: 1,
-    dayOfWeek: "Monday",
-    trainingMax: 175,
-    setInfoDefs: [{ reps: 6, percent: 0.50 }, { reps: 5, percent: 0.60 }, { reps: 3, percent: 0.70 }, { reps: 5, percent: 0.70 }, { reps: 7, percent: 0.70 }, { reps: 4, percent: 0.70 }, { reps: 6, percent: 0.70 }, { reps: 8, percent: 0.70 }]
-  },
-  {
-    name: "Squat",
-    nameInternal: "Squat",
-    id: 2,
-    dayOfWeek: "Tuesday",
-    trainingMax: 300,
-    setInfoDefs: [{ reps: 5, percent: 0.75 }, { reps: 3, percent: 0.85 }, { reps: "1+", percent: 0.95 }, { reps: 3, percent: 0.90 }, { reps: 3, percent: 0.85 }, { reps: 3, percent: 0.80 }, { reps: 5, percent: 0.75 }, { reps: 5, percent: 0.70 }, { reps: "5+", percent: 0.65 }]
-  }
-]
+import { globalExerciseDefs } from './AllExercises';
 
 const sampleMondayExercises = [
   {
@@ -66,11 +38,60 @@ function RoundToNearest(num) {
   return result * 5;
 }
 
+function getExercisesForThisWeekday(day) {
+
+  console.log("---------------------------")
+
+  const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
+
+  var result = [];
+
+  globalExerciseDefs.forEach(globalExerciseDefElement => {
+    if (globalExerciseDefElement.dayOfWeek == day) {
+      var thisDayExercise = defaultExerciseInfo;
+      thisDayExercise.name = globalExerciseDefElement.name;
+      thisDayExercise.nameInternal = globalExerciseDefElement.nameInternal;
+      thisDayExercise.id = globalExerciseDefElement.id;
+      thisDayExercise.dayOfWeek = globalExerciseDefElement.dayOfWeek;
+      thisDayExercise.trainingMax = globalExerciseDefElement.trainingMax;
+
+      //console.log(globalExerciseDefElement.name + " exercise setInfo: ")
+
+      var toThisDaySetInfo = [];
+
+      // Iterates through the globalExerciseDefs to populate this day's setInfo with the necessarry "reps", "percent" and adds a "done" of 0.
+      globalExerciseDefElement.setInfoDefs.forEach(globalSetInfoDefElement => {
+
+        const defaultSetInfoElement = { reps: 0, percent: 0.00, done: 0 };
+
+        var thisDaySetInfoElement = defaultSetInfoElement;
+        //console.log(thisDaySetInfoElement)
+
+        thisDaySetInfoElement.reps = globalSetInfoDefElement.reps;
+        thisDaySetInfoElement.percent = globalSetInfoDefElement.percent;
+
+        //console.log(thisDaySetInfoElement)
+        toThisDaySetInfo.push(thisDaySetInfoElement)
+      });
+
+      thisDayExercise.setInfo = toThisDaySetInfo;
+
+      console.log(thisDayExercise);
+
+      result.push(thisDayExercise);
+    }
+  });
+
+  return result;
+}
+
 export default function DaysAndExercises({ navigation }) {
 
   const [exercises, changeExercises] = React.useState(sampleMondayExercises);
 
   const [mondayExercises, changeMondayExercises] = React.useState(sampleMondayExercises);
+
+  getExercisesForThisWeekday("Tuesday");
 
   const Stack = createNativeStackNavigator();
 
@@ -79,8 +100,8 @@ export default function DaysAndExercises({ navigation }) {
     return (
       <View style={[styles.container]}>
         <ScrollView style={styles.dayExercises}>
-          <ExerciseCard navigation={props.navigation} exercise={props.routeExercises[0]} />
-          <ExerciseCard navigation={props.navigation} exercise={props.routeExercises[1]} />
+          <ExerciseCard navigation={props.navigation} exercise={props.exercises[0]} />
+          <ExerciseCard navigation={props.navigation} exercise={props.exercises[1]} />
           <Button onPress={() => { console.log(mondayExercises) }} />
         </ScrollView>
       </View>
@@ -114,28 +135,26 @@ export default function DaysAndExercises({ navigation }) {
       { key: 'friday', title: 'F' },
     ])
 
-    /*
-    
+
+    /*    
     This forces the DaysAndExercisesScreen to re-render whenever it is navigated back to.
 
     This is useful because the exersice card data now visually updates when it should.
 
-
-    The dummy state hook literally just exists for the purpose of reloading the entire component.
-
+    The dummy state hook literally just exists for the purpose of reloading this entire component.
     */
 
-    const [dummy, changeDummy] = React.useState(0);      
+    const [dummy, changeDummy] = React.useState(0);
 
     const forceUpdate = navigation.addListener('focus', () => {
       changeDummy(dummy + 1);
     })
-    
+
     const renderScene = ({ route }) => {
-    
+
       switch (route.key) {
         case 'monday':
-          return <MondayRoute navigation={navigation} routeExercises={mondayExercises} />;
+          return <MondayRoute navigation={navigation} exercises={mondayExercises} />;
         case 'tuesday':
           return <TuesdayRoute navigation={navigation} />;
         case 'wednesday':
@@ -167,7 +186,7 @@ export default function DaysAndExercises({ navigation }) {
         renderTabBar={renderTabBar}
         onIndexChange={setIndex}
         tabBarPosition='bottom'
-        style={{backgroundColor: "transparent"}}
+        style={{ backgroundColor: "transparent" }}
       />
     );
 
@@ -179,7 +198,6 @@ export default function DaysAndExercises({ navigation }) {
     const [currTrainingMax, changeCurrTrainingMax] = React.useState(props.exercise.trainingMax);
 
     const handleExerciseDetailsGoBack = () => {
-      console.log("going back");
       props.navigation.goBack();
     }
 
