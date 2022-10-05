@@ -40,7 +40,7 @@ function RoundToNearest(num) {
 
 function getExercisesForThisWeekday(day) {
 
-  console.log("Getting exercises for " + day + "...")
+  console.log("Getting exercises for " + day + ": ")
 
   var result = [];
 
@@ -48,8 +48,6 @@ function getExercisesForThisWeekday(day) {
     if (globalExerciseDefElement.dayOfWeek == day) {
 
       const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
-
-      console.log(defaultExerciseInfo);
 
       var thisDayExercise = defaultExerciseInfo;
       thisDayExercise.name = globalExerciseDefElement.name;
@@ -77,9 +75,11 @@ function getExercisesForThisWeekday(day) {
 
       result.push(thisDayExercise);
 
-      console.log(thisDayExercise.name + "...")
+      console.log("\t-> " + thisDayExercise.name + "... ")
     }
   });
+
+  console.log("")
 
   return result;
 }
