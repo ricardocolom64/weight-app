@@ -273,62 +273,116 @@ export default function DaysAndExercises({ navigation }) {
 
           const [repsCompleted, changeRepsCompleted] = React.useState(currentSet.repsDone);
 
+          const [currentSetStatus, changeCurrentSetStatus] = React.useState("initial")
+
           const handleChangeRepsCompleted = (text) => {
             changeRepsCompleted(text);
 
-            if (Number.isInteger(+text)) {
-              currentSet.repsDone = +text;
+            //console.log("text: " + text + "\trepsCompleted: " + repsCompleted)
+          }
 
+          function currentSetBackground() {
+            //console.log(i + "\tFiring currentSetBackground")
+
+            var bg_color = "muted.200";
+            if (currentSetStatus == "failed")
+              bg_color = "error.500"
+            else if (currentSetStatus == "completed")
+              bg_color = "success.500";
+
+            return (<Box flex="1" width="2px" height="100%" position="absolute" left="0px" bg={bg_color} />)
+          }
+
+          function currentSetIcon() {
+            //console.log(i + "\tFiring currentSetIcon")
+
+            if (currentSetStatus == "failed")
+              return (<IconButton position="absolute" right="-36px" size="md" icon={<CloseIcon color="error.500" />} onPress={() => { handleSetButtonPress() }} />)
+            else if (currentSetStatus == "completed")
+              return (<IconButton position="absolute" right="-36px" size="md" icon={<CheckIcon color="success.500" />} onPress={() => { handleSetButtonPress() }} />)
+            else
+              return (<IconButton position="absolute" right="-36px" size="md" icon={<CheckIcon color="muted.200" />} onPress={() => { handleSetButtonPress() }} />)
+          }
+
+          // When reps completed is changed...
+          React.useEffect(() => {
+
+            if (typeof currentSet.reps === 'string') {
+
+              console.log("repsCompleted: " + repsCompleted + "\tcurrentSet.reps: " + (currentSet.reps).replace("+", ""))
+
+              if (repsCompleted >= parseInt((currentSet.reps).replace("+", ""))) {
+                console.log("Equal to or greater than the required")
+                changeCurrentSetStatus("completed")
+              }
+              else if (repsCompleted > 0 && repsCompleted < parseInt((currentSet.reps).replace("+", ""))) {
+                console.log("Less than the required")
+                changeCurrentSetStatus("failed")
+              }
+              else
+                changeCurrentSetStatus("initial")
+            }
+            else {
+              console.log("repsCompleted: " + repsCompleted + "\tcurrentSet.reps: " + currentSet.reps)
+
+              if (repsCompleted >= currentSet.reps) {
+                console.log("Completed")
+                changeCurrentSetStatus("completed")
+              }
+              else if (repsCompleted > 0 && repsCompleted < currentSet.reps) {
+                changeCurrentSetStatus("failed")
+              }
+              else
+                changeCurrentSetStatus("initial")
+            }
+
+            if (Number.isFinite(repsCompleted)) {
+              console.log("Type is number...");
+              currentSet.repsDone = repsCompleted;
               var setsCompleted = 0;
 
+              // Iterates through all of the setInfo again to change the number of sets completed
               props.exercise.setInfo.forEach(element => {
-                if (element.repsDone >= element.reps)
+
+                if (typeof element.reps === 'string' && element.repsDone >= (element.reps).replace("+", "")) {
+                  console.log("PROGRESSED")
                   setsCompleted++;
+                }
+
+                if (element.repsDone >= element.reps) {
+                  setsCompleted++;
+                }
               });
 
               props.exercise.setsCompleted = setsCompleted;
             }
-          }
+          }, [repsCompleted])
 
-          function currentSetStatus() {
-            if (repsCompleted > 0 && repsCompleted < currentSet.reps) {
-              return "failed";
-            }
-            else if (repsCompleted >= currentSet.reps) {
-              return "completed";
-            }
-            else
-              return "initial";
-          }
-
-          function currentSetBackground() {
-            switch (currentSetStatus()) {
-              case "failed":
-                return "error.500";
-              case "completed":
-                return "success.500";
-              default:
-                return "muted.200";
-            }
-          }
-
-          function currentSetIcon() {
-            switch (currentSetStatus()) {
-              case "failed":
-                return <CloseIcon color="error.500" />;
-              case "completed":
-                return <CheckIcon color="success.500" />;
-              default:
-                return <CheckIcon color="muted.200" />;
-            }
-          }
+          // When the currentSetStatus ("completed", "failed", etc.) is changed...
+          React.useEffect(() => {
+            //console.log(i + "\tFiring useEffect")
+            currentSetBackground();
+            currentSetIcon();
+          }, [currentSetStatus])
 
           function handleSetButtonPress() {
-            if (currentSetStatus() == "initial") {
-              handleChangeRepsCompleted(currentSet.reps);
+            if (currentSetStatus == "initial") {
+
+              // If the typeof is a string for progression sets (like "1+")
+              if (typeof currentSet.reps === 'string') {
+                var currentSetRepsToInteger = parseInt((currentSet.reps).replace("+", ""));
+                handleChangeRepsCompleted(currentSetRepsToInteger)
+                changeCurrentSetStatus("completed");
+              }
+              // else...
+              else {
+                handleChangeRepsCompleted(currentSet.reps);
+                changeCurrentSetStatus("completed");
+              }
             }
             else {
               handleChangeRepsCompleted(0);
+              changeCurrentSetStatus("initial");
             }
           }
 
@@ -338,14 +392,14 @@ export default function DaysAndExercises({ navigation }) {
               <Text>{currentSet.reps} reps at {RoundToNearest(props.exercise.trainingMax * currentSet.percent)} lb</Text>
               <Text color="grey" fontSize="xs">{currentSet.percent * 100}% of training max</Text>
             </Box>
-            <Box flex="1" width="2px" height="100%" position="absolute" left="0px" bg={currentSetBackground()} />
+            {currentSetBackground()}
             <Spacer />
             <Divider orientation='vertical' thickness="0" />
             <Spacer />
             <Box width="128px" flexDirection="row" alignItems="center" justifyContent="center">
               <Input width="48px" p="2" mx="3" value={repsCompleted + ""} onChangeText={handleChangeRepsCompleted} textAlign={"center"} focusOutlineColor="success.500" keyboardType={'numeric'}
                 maxLength="3" variant="outline" bg="white" />
-              <IconButton position="absolute" right="-36px" size="md" icon={currentSetIcon()} onPress={() => { handleSetButtonPress() }} />
+              {currentSetIcon()}
             </Box>
             <Spacer />
           </Box>)
