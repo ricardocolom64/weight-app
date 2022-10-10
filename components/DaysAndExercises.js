@@ -309,24 +309,21 @@ export default function DaysAndExercises({ navigation }) {
 
             if (typeof currentSet.reps === 'string') {
 
-              console.log("repsCompleted: " + repsCompleted + "\tcurrentSet.reps: " + (currentSet.reps).replace("+", ""))
+              //console.log("repsCompleted: " + repsCompleted + "\tcurrentSet.reps: " + (currentSet.reps).replace("+", ""))
 
               if (repsCompleted >= parseInt((currentSet.reps).replace("+", ""))) {
-                console.log("Equal to or greater than the required")
                 changeCurrentSetStatus("completed")
               }
               else if (repsCompleted > 0 && repsCompleted < parseInt((currentSet.reps).replace("+", ""))) {
-                console.log("Less than the required")
                 changeCurrentSetStatus("failed")
               }
               else
                 changeCurrentSetStatus("initial")
             }
             else {
-              console.log("repsCompleted: " + repsCompleted + "\tcurrentSet.reps: " + currentSet.reps)
+              //console.log("repsCompleted: " + repsCompleted + "\tcurrentSet.reps: " + currentSet.reps)
 
               if (repsCompleted >= currentSet.reps) {
-                console.log("Completed")
                 changeCurrentSetStatus("completed")
               }
               else if (repsCompleted > 0 && repsCompleted < currentSet.reps) {
@@ -336,20 +333,23 @@ export default function DaysAndExercises({ navigation }) {
                 changeCurrentSetStatus("initial")
             }
 
-            if (Number.isFinite(repsCompleted)) {
-              console.log("Type is number...");
+            if (!isNaN(repsCompleted)) {
+
+              // Update the repsDone key of the currentSet
               currentSet.repsDone = repsCompleted;
+              //console.log(currentSet.repsDone);
               var setsCompleted = 0;
 
               // Iterates through all of the setInfo again to change the number of sets completed
               props.exercise.setInfo.forEach(element => {
 
-                if (typeof element.reps === 'string' && element.repsDone >= (element.reps).replace("+", "")) {
+                // If the type is string, meaning it's a progression set like "1+"
+                if (typeof element.reps === 'string' && element.repsDone >= parseInt((element.reps).replace("+", ""))) {
                   console.log("PROGRESSED")
                   setsCompleted++;
                 }
-
-                if (element.repsDone >= element.reps) {
+                // else...
+                else if (element.repsDone >= element.reps) {
                   setsCompleted++;
                 }
               });
