@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import * as React from 'react';
 
 import DaysAndExercises from '../components/DaysAndExercises';
 import WeightCalculator from '../components/WeightCalculator';
@@ -11,9 +11,130 @@ import { Text, View, Button, Avatar, Box, Spacer, Pressable } from 'native-base'
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-/*
-    For some reason the Stack navigator does not support custom header heights unlike the Tab navigator which is pretty dumb, so I have to make my own TopHeader...
-*/
+const weeks = [
+    {
+        mondayDate: "October 10, 2022",
+        id: 1,
+        exercises: [
+            {
+                "name": "Bench",
+                "nameInternal": "BenchMonday",
+                "id": 0,
+                "dayOfWeek": "Monday",
+                "trainingMax": 290,
+                "setInfo": [
+                    {
+                        "reps": 8,
+                        "percent": 0.65,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.75,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.85,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.85,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.85,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 5,
+                        "percent": 0.8,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.75,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": "8+",
+                        "percent": 0.65,
+                        "repsDone": 0
+                    }
+                ],
+                "setsCompleted": 0
+            },
+            {
+                "name": "Overhead Press",
+                "nameInternal": "OverheadPressMonday",
+                "id": 1,
+                "dayOfWeek": "Monday",
+                "trainingMax": 175,
+                "setInfo": [
+                    {
+                        "reps": 6,
+                        "percent": 0.5,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 5,
+                        "percent": 0.6,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 3,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 5,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 7,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 8,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    }
+                ],
+                "setsCompleted": 0
+            }
+      ]
+    },
+    {
+        mondayDate: "October 3, 2022",
+        id: 0,
+        exercises: {}
+    }
+]
+
+
+
+
+
+//   For some reason the Stack navigator does not support custom header heights unlike the Tab navigator so I have to make my own TopHeader...
 
 function MainHomeTopHeader({ navigation }) {
     return (
@@ -118,6 +239,9 @@ function SetWeekScreen({ navigation }) {
 }
 
 export default function Home() {
+
+    const [currWeek, changeCurrWeek] = React.useState()
+
     return (
         <NavigationContainer independent={true}>
             <HomeStack.Navigator screenOptions={{ headerShown: false }}>

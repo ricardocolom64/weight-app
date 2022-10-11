@@ -88,6 +88,8 @@ export default function DaysAndExercises({ navigation }) {
 
   const [mondayExercises, changeMondayExercises] = React.useState(getExercisesForThisWeekday("Monday"));
 
+  console.log(JSON.stringify(mondayExercises, null, 4));
+
   const [tuesdayExercises, changeTuesdayExercises] = React.useState(getExercisesForThisWeekday("Tuesday"));
 
   const [wednesdayExercises, changeWednesdayExercises] = React.useState(getExercisesForThisWeekday("Wednesday"));
