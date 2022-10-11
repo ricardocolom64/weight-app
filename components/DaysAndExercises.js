@@ -38,57 +38,69 @@ function RoundToNearest(num) {
   return result * 5;
 }
 
-function getExercisesForThisWeekday(day) {
+export default function DaysAndExercises(props) {
 
-  console.log("Getting exercises for " + day + ": ")
+  const thisWeeksExercises = props.week.exercises
 
-  var result = [];
+  //console.log(JSON.stringify(thisWeeksExercises, null, 4));
 
-  globalExerciseDefs.forEach(globalExerciseDefElement => {
-    if (globalExerciseDefElement.dayOfWeek == day) {
+  function getExercisesForThisWeekday(day) {
 
-      const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
+    console.log("Getting exercises for " + day + ": ")
 
-      var thisDayExercise = defaultExerciseInfo;
-      thisDayExercise.name = globalExerciseDefElement.name;
-      thisDayExercise.nameInternal = globalExerciseDefElement.nameInternal;
-      thisDayExercise.id = globalExerciseDefElement.id;
-      thisDayExercise.dayOfWeek = globalExerciseDefElement.dayOfWeek;
-      thisDayExercise.trainingMax = globalExerciseDefElement.trainingMax;
+    var result = [];
 
-      var toThisDaySetInfo = [];
+    thisWeeksExercises.forEach(element => {
+      if(element.dayOfWeek == day)
+      {
+        console.log(element.name + "...")
+        result.push(element)
+      }
+    })
 
-      // Iterates through the globalExerciseDefs to populate this day's setInfo with the necessarry "reps", "percent" and adds a "done" of 0.
-      globalExerciseDefElement.setInfoDefs.forEach(globalSetInfoDefElement => {
+    // globalExerciseDefs.forEach(globalExerciseDefElement => {
+    //   if (globalExerciseDefElement.dayOfWeek == day) {
 
-        const defaultSetInfoElement = { reps: 0, percent: 0.00, repsDone: 0 };
+    //     const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
 
-        var thisDaySetInfoElement = defaultSetInfoElement;
+    //     var thisDayExercise = defaultExerciseInfo;
+    //     thisDayExercise.name = globalExerciseDefElement.name;
+    //     thisDayExercise.nameInternal = globalExerciseDefElement.nameInternal;
+    //     thisDayExercise.id = globalExerciseDefElement.id;
+    //     thisDayExercise.dayOfWeek = globalExerciseDefElement.dayOfWeek;
+    //     thisDayExercise.trainingMax = globalExerciseDefElement.trainingMax;
 
-        thisDaySetInfoElement.reps = globalSetInfoDefElement.reps;
-        thisDaySetInfoElement.percent = globalSetInfoDefElement.percent;
+    //     var toThisDaySetInfo = [];
 
-        toThisDaySetInfo.push(thisDaySetInfoElement)
-      });
+    //     // Iterates through the globalExerciseDefs to populate this day's setInfo with the necessarry "reps", "percent" and adds a "done" of 0.
+    //     globalExerciseDefElement.setInfoDefs.forEach(globalSetInfoDefElement => {
 
-      thisDayExercise.setInfo = toThisDaySetInfo;
+    //       const defaultSetInfoElement = { reps: 0, percent: 0.00, repsDone: 0 };
 
-      result.push(thisDayExercise);
+    //       var thisDaySetInfoElement = defaultSetInfoElement;
 
-      console.log("\t-> " + thisDayExercise.name + "... ")
-    }
-  });
+    //       thisDaySetInfoElement.reps = globalSetInfoDefElement.reps;
+    //       thisDaySetInfoElement.percent = globalSetInfoDefElement.percent;
 
-  console.log("")
+    //       toThisDaySetInfo.push(thisDaySetInfoElement)
+    //     });
 
-  return result;
-}
+    //     thisDayExercise.setInfo = toThisDaySetInfo;
 
-export default function DaysAndExercises({ navigation }) {
+    //     result.push(thisDayExercise);
+
+    //     console.log("\t-> " + thisDayExercise.name + "... ")
+    //   }
+    // });
+
+    console.log("")
+
+    return result;
+  }
 
   const [mondayExercises, changeMondayExercises] = React.useState(getExercisesForThisWeekday("Monday"));
 
-  console.log(JSON.stringify(mondayExercises, null, 4));
+  //console.log(JSON.stringify(mondayExercises, null, 4));
 
   const [tuesdayExercises, changeTuesdayExercises] = React.useState(getExercisesForThisWeekday("Tuesday"));
 
