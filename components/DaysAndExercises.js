@@ -53,7 +53,7 @@ export default function DaysAndExercises(props) {
     thisWeeksExercises.forEach(element => {
       if(element.dayOfWeek == day)
       {
-        console.log(element.name + "...")
+        //console.log(element.name + "...")
         result.push(element)
       }
     })
@@ -93,7 +93,7 @@ export default function DaysAndExercises(props) {
     //   }
     // });
 
-    console.log("")
+    //console.log("")
 
     return result;
   }

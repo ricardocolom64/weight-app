@@ -235,117 +235,12 @@ const defaultAllWeeks = [
             }
         ]
     },
-    {
-        mondayDate: "October 10, 2022",
-        week_id: -1,
-        exercises: [
-            {
-                "name": "Bench Oct 10",
-                "nameInternal": "DummyOne",
-                "id": 0,
-                "dayOfWeek": "Monday",
-                "trainingMax": 290,
-                "setInfo": [
-                    {
-                        "reps": 8,
-                        "percent": 0.65,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 6,
-                        "percent": 0.75,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 4,
-                        "percent": 0.85,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 4,
-                        "percent": 0.85,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 4,
-                        "percent": 0.85,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 5,
-                        "percent": 0.8,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 6,
-                        "percent": 0.75,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 6,
-                        "percent": 0.7,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": "8+",
-                        "percent": 0.65,
-                        "repsDone": 0
-                    }
-                ],
-                "setsCompleted": 0
-            },
-            {
-                "name": "OHP Oct 10",
-                "nameInternal": "DummyTwo",
-                "id": 1,
-                "dayOfWeek": "Monday",
-                "trainingMax": 175,
-                "setInfo": [
-                    {
-                        "reps": 6,
-                        "percent": 0.5,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 5,
-                        "percent": 0.6,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 3,
-                        "percent": 0.7,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 5,
-                        "percent": 0.7,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 7,
-                        "percent": 0.7,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 4,
-                        "percent": 0.7,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 6,
-                        "percent": 0.7,
-                        "repsDone": 0
-                    },
-                    {
-                        "reps": 8,
-                        "percent": 0.7,
-                        "repsDone": 0
-                    }
-                ],
-                "setsCompleted": 0
-            }
-        ]
-    },
+    // {
+    //     mondayDate: "October 10, 2022",
+    //     week_id: 2,
+    //     exercises: [
+    //     ]
+    // },
 ]
 
 function calcExercises(day) {
@@ -435,7 +330,7 @@ export default function Home() {
 
         result.exercises = exercises;
 
-        console.log(JSON.stringify(result, null, 4));
+        //console.log(JSON.stringify(result, null, 4));
 
         return result;
     }
@@ -443,13 +338,73 @@ export default function Home() {
     function renderDaysAndExercises() {
         console.log("Week ID: " + week.week_id)
 
-        // if (week.exercises.length == 2)
-        //     changeWeek(populateWeek());
-        // else
-        //     return (<DaysAndExercises week={week} />)
+        if (week.exercises.length == 0)
+            changeWeek(populateWeek());
+        else
+            return (<DaysAndExercises week={week} />)
 
         return (<DaysAndExercises week={week} />)
     }
+
+    function createNewWeek() {
+
+        const defaultWeek = { mondayDate: "", week_id: -1, exercises: [] }
+
+        var newWeek = defaultWeek;
+
+        newWeek.mondayDate = "October 10, 2022"
+
+        newWeek.week_id = allWeeks.length - 1;
+
+        var exercises = [];
+
+        calcExercises("Monday").forEach(element => {
+            exercises.push(element);
+        });
+
+        calcExercises("Tuesday").forEach(element => {
+            exercises.push(element);
+        });
+
+        calcExercises("Wednesday").forEach(element => {
+            exercises.push(element);
+        });
+
+        calcExercises("Thursday").forEach(element => {
+            exercises.push(element);
+        });
+
+        calcExercises("Friday").forEach(element => {
+            exercises.push(element);
+        });
+
+        //console.log(JSON.stringify(result, null, 4));
+
+        newWeek.exercises = exercises;
+
+        changeAllWeeks((oldWeeks) => [...oldWeeks, newWeek]);
+    }
+
+    // Anytime the current week is changed, update the allWeeks hook
+    React.useEffect(() => {
+        console.log("Firing week useEffect")
+
+        var tempAllWeeks = allWeeks;
+
+        tempAllWeeks.forEach(element => {
+            if(element.week_id == week.week_id)
+            {
+                element = week;
+            }
+        });
+
+        changeAllWeeks(tempAllWeeks);
+
+    }, [week])
+
+    React.useEffect(() => {
+        console.log("allWeeks.length: " + allWeeks.length);
+    }, [allWeeks])
 
     //   For some reason the Stack navigator does not support custom header heights unlike the Tab navigator so I have to make my own TopHeader...
 
@@ -511,6 +466,7 @@ export default function Home() {
                 <SetWeekTopHeader navigation={navigation} />
                 <Box flex="1">
                     <Spacer />
+                    <Button onPress={() => {createNewWeek()}}>Create new week</Button>
                     <Text color="grey" fontSize="xs" mx="3" my="1">LATEST WEEK</Text>
                     <Pressable onPress={() => changeWeek(allWeeks[allWeeks.length - 1])}>
                         {({
