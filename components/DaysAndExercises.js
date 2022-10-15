@@ -39,14 +39,14 @@ function RoundToNearest(num) {
 }
 
 export default function DaysAndExercises(props) {
-  
+
   const thisWeeksExercises = props.week.exercises
 
   //console.log(JSON.stringify(thisWeeksExercises, null, 4));
 
   function getExercisesForThisWeekday(day) {
 
-    console.log("Getting exercises for " + day + ": ")
+    //console.log("Getting exercises for " + day + ": ")
 
     var result = [];
 

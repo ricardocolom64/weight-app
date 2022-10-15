@@ -14,11 +14,11 @@ import { globalExerciseDefs } from '../components/AllExercises'
 
 const defaultAllWeeks = [
     {
-        mondayDate: "October 3, 2022",
-        week_id: -1,
+        mondayDate: "September 26, 2022",
+        week_id: 0,
         exercises: [
             {
-                "name": "Dummy",
+                "name": "Bench Sep 26",
                 "nameInternal": "DummyOne",
                 "id": 0,
                 "dayOfWeek": "Monday",
@@ -73,7 +73,7 @@ const defaultAllWeeks = [
                 "setsCompleted": 0
             },
             {
-                "name": "Dummy",
+                "name": "OHP Sep 26",
                 "nameInternal": "DummyTwo",
                 "id": 1,
                 "dayOfWeek": "Monday",
@@ -125,12 +125,12 @@ const defaultAllWeeks = [
         ]
     },
     {
-        mondayDate: "October 10, 2022",
+        mondayDate: "October 3, 2022",
         week_id: 1,
         exercises: [
             {
-                "name": "Bench",
-                "nameInternal": "BenchMonday",
+                "name": "Bench Oct 3",
+                "nameInternal": "DummyOne",
                 "id": 0,
                 "dayOfWeek": "Monday",
                 "trainingMax": 290,
@@ -184,8 +184,119 @@ const defaultAllWeeks = [
                 "setsCompleted": 0
             },
             {
-                "name": "Overhead Press",
-                "nameInternal": "OverheadPressMonday",
+                "name": "OHP Oct 3",
+                "nameInternal": "DummyTwo",
+                "id": 1,
+                "dayOfWeek": "Monday",
+                "trainingMax": 175,
+                "setInfo": [
+                    {
+                        "reps": 6,
+                        "percent": 0.5,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 5,
+                        "percent": 0.6,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 3,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 5,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 7,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 8,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    }
+                ],
+                "setsCompleted": 0
+            }
+        ]
+    },
+    {
+        mondayDate: "October 10, 2022",
+        week_id: -1,
+        exercises: [
+            {
+                "name": "Bench Oct 10",
+                "nameInternal": "DummyOne",
+                "id": 0,
+                "dayOfWeek": "Monday",
+                "trainingMax": 290,
+                "setInfo": [
+                    {
+                        "reps": 8,
+                        "percent": 0.65,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.75,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.85,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.85,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.85,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 5,
+                        "percent": 0.8,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.75,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": "8+",
+                        "percent": 0.65,
+                        "repsDone": 0
+                    }
+                ],
+                "setsCompleted": 0
+            },
+            {
+                "name": "OHP Oct 10",
+                "nameInternal": "DummyTwo",
                 "id": 1,
                 "dayOfWeek": "Monday",
                 "trainingMax": 175,
@@ -286,17 +397,17 @@ export default function Home() {
 
     const [allWeeks, changeAllWeeks] = React.useState(defaultAllWeeks)
 
-    const [week, changeWeek] = React.useState(defaultAllWeeks[0])
+    const [week, changeWeek] = React.useState(defaultAllWeeks[defaultAllWeeks.length - 1])
 
     function populateWeek() {
 
-        const defaultWeek = {mondayDate: "", week_id: -1, exercises: []}
+        const defaultWeek = { mondayDate: "", week_id: -1, exercises: [] }
 
         var result = defaultWeek;
 
         result.mondayDate = "October 10, 2022"
 
-        result.week_id = 1;
+        result.week_id = allWeeks.length - 1;
 
         var exercises = [];
 
@@ -329,14 +440,15 @@ export default function Home() {
         return result;
     }
 
-    function renderDaysAndExercises()
-    {
+    function renderDaysAndExercises() {
         console.log("Week ID: " + week.week_id)
 
-        if(week.week_id == -1)
-            changeWeek(populateWeek());
-        else
-            return (<DaysAndExercises week={week} />)
+        // if (week.exercises.length == 2)
+        //     changeWeek(populateWeek());
+        // else
+        //     return (<DaysAndExercises week={week} />)
+
+        return (<DaysAndExercises week={week} />)
     }
 
     //   For some reason the Stack navigator does not support custom header heights unlike the Tab navigator so I have to make my own TopHeader...
@@ -386,7 +498,7 @@ export default function Home() {
             <View flex="1">
                 <Box height={NativeConstants.statusBarHeight + "px"} bg="white" />
                 <MainHomeTopHeader navigation={navigation} week={week} />
-                <WeightCalculator />                
+                <WeightCalculator />
                 {renderDaysAndExercises()}
             </View>
         );
@@ -399,8 +511,8 @@ export default function Home() {
                 <SetWeekTopHeader navigation={navigation} />
                 <Box flex="1">
                     <Spacer />
-                    <Text color="grey" fontSize="xs" mx="3" my="1">CURRENT WEEK</Text>
-                    <Pressable width="100%" height="48px" justifyContent="center">
+                    <Text color="grey" fontSize="xs" mx="3" my="1">LATEST WEEK</Text>
+                    <Pressable onPress={() => changeWeek(allWeeks[allWeeks.length - 1])}>
                         {({
                             isHovered,
                             isPressed,
@@ -408,7 +520,7 @@ export default function Home() {
                         }) => {
                             return <Box width="100%" height="48px" justifyContent="center" bg={isPressed ? "coolGray.200" : "white"} borderTopWidth="0.5" borderBottomWidth="0.5" borderColor="muted.300">
                                 <Box flexDir="row" mx="3">
-                                    <Text>October 10, 2022</Text>
+                                    <Text>{allWeeks[allWeeks.length - 1].mondayDate}</Text>
                                     <Spacer />
                                     <Text>__%</Text>
                                 </Box>
@@ -417,22 +529,25 @@ export default function Home() {
                     </Pressable>
                     <Spacer />
                     <Text color="grey" fontSize="xs" mx="3" my="1">PAST WEEKS</Text>
-                    <Box bg="white" borderTopWidth="0.5" borderBottomWidth="0.5" borderColor="muted.300">
-                        <Box width="100%" height="48px" justifyContent="center" bg="white">
-                            <Box flexDir="row" mx="3">
-                                <Text>October 3, 2022</Text>
-                            </Box>
-                        </Box>
-                        <Box width="100%" height="48px" justifyContent="center" bg="muted.100">
-                            <Box flexDir="row" mx="3">
-                                <Text>September 26, 2022</Text>
-                            </Box>
-                        </Box>
-                        <Box width="100%" height="48px" justifyContent="center" bg="white">
-                            <Box flexDir="row" mx="3">
-                                <Text>September 19, 2022</Text>
-                            </Box>
-                        </Box>
+                    <Box bg="white" borderTopWidth="0.5" borderBottomWidth="0.5" borderColor="muted.300" flexDir="column-reverse">
+                        {allWeeks.map((curr, i) => {
+                            if (i != allWeeks.length - 1) {
+                                return (
+                                    <Pressable onPress={() => changeWeek(curr)} key={i}>
+                                        {({
+                                            isHovered,
+                                            isPressed,
+                                            isFocused
+                                        }) => {
+                                            return <Box width="100%" height="48px" justifyContent="center" bg={isPressed ? "coolGray.200" : "white"}>
+                                                <Box flexDir="row" mx="3">
+                                                    <Text>{curr.mondayDate}</Text>
+                                                </Box>
+                                            </Box>
+                                        }}
+                                    </Pressable>)
+                            }
+                        })}
                     </Box>
                     <Spacer />
                     <Spacer />
