@@ -7,7 +7,7 @@ import NativeConstants from 'expo-constants';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { Text, View, Button, Avatar, Box, Spacer, Pressable } from 'native-base';
+import { Text, View, Button, Avatar, Box, Spacer, Pressable, CheckIcon } from 'native-base';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { globalExerciseDefs } from '../components/AllExercises'
@@ -235,12 +235,6 @@ const defaultAllWeeks = [
             }
         ]
     },
-    // {
-    //     mondayDate: "October 10, 2022",
-    //     week_id: 2,
-    //     exercises: [
-    //     ]
-    // },
 ]
 
 function calcExercises(day) {
@@ -294,54 +288,15 @@ export default function Home() {
 
     const [week, changeWeek] = React.useState(defaultAllWeeks[defaultAllWeeks.length - 1])
 
-    function populateWeek() {
-
-        const defaultWeek = { mondayDate: "", week_id: -1, exercises: [] }
-
-        var result = defaultWeek;
-
-        result.mondayDate = "October 10, 2022"
-
-        result.week_id = allWeeks.length - 1;
-
-        var exercises = [];
-
-        calcExercises("Monday").forEach(element => {
-            exercises.push(element);
-        });
-
-        calcExercises("Tuesday").forEach(element => {
-            exercises.push(element);
-        });
-
-        calcExercises("Wednesday").forEach(element => {
-            exercises.push(element);
-        });
-
-        calcExercises("Thursday").forEach(element => {
-            exercises.push(element);
-        });
-
-        calcExercises("Friday").forEach(element => {
-            exercises.push(element);
-        });
-
-        //console.log(JSON.stringify(result, null, 4));
-
-        result.exercises = exercises;
-
-        //console.log(JSON.stringify(result, null, 4));
-
-        return result;
-    }
+    const [justCreatedNewWeek, changeJustCreatedNewWeek] = React.useState(false)
 
     function renderDaysAndExercises() {
         console.log("Week ID: " + week.week_id)
 
-        if (week.exercises.length == 0)
-            changeWeek(populateWeek());
-        else
-            return (<DaysAndExercises week={week} />)
+        // if (week.exercises.length == 0)
+        //     changeWeek(populateWeek());
+        // else
+        //     return (<DaysAndExercises week={week} />)
 
         return (<DaysAndExercises week={week} />)
     }
@@ -354,7 +309,7 @@ export default function Home() {
 
         newWeek.mondayDate = "October 10, 2022"
 
-        newWeek.week_id = allWeeks.length - 1;
+        newWeek.week_id = allWeeks.length;
 
         var exercises = [];
 
@@ -383,6 +338,7 @@ export default function Home() {
         newWeek.exercises = exercises;
 
         changeAllWeeks((oldWeeks) => [...oldWeeks, newWeek]);
+        changeJustCreatedNewWeek(true);
     }
 
     // Anytime the current week is changed, update the allWeeks hook
@@ -392,19 +348,25 @@ export default function Home() {
         var tempAllWeeks = allWeeks;
 
         tempAllWeeks.forEach(element => {
-            if(element.week_id == week.week_id)
-            {
+            if (element.week_id == week.week_id) {
                 element = week;
             }
         });
 
         changeAllWeeks(tempAllWeeks);
+        changeJustCreatedNewWeek(false);
 
     }, [week])
 
     React.useEffect(() => {
-        console.log("allWeeks.length: " + allWeeks.length);
-    }, [allWeeks])
+        createNewWeek();
+    }, [])
+
+    React.useEffect(() => {
+        if (justCreatedNewWeek == true) {
+            changeWeek(allWeeks[allWeeks.length - 1]);
+        }
+    }, [justCreatedNewWeek])
 
     //   For some reason the Stack navigator does not support custom header heights unlike the Tab navigator so I have to make my own TopHeader...
 
@@ -460,13 +422,19 @@ export default function Home() {
     }
 
     function SetWeekScreen({ navigation }) {
+
+        const isThisWeekCurrentlySelected = (curr) => {
+            if (curr.week_id == week.week_id)
+                return (<CheckIcon color="black" />)
+        }
+
         return (
             <View flex="1" bg="light">
                 <Box height={NativeConstants.statusBarHeight + "px"} bg="white" />
                 <SetWeekTopHeader navigation={navigation} />
                 <Box flex="1">
                     <Spacer />
-                    <Button onPress={() => {createNewWeek()}}>Create new week</Button>
+                    <Button onPress={() => { createNewWeek() }}>Create new week</Button>
                     <Text color="grey" fontSize="xs" mx="3" my="1">LATEST WEEK</Text>
                     <Pressable onPress={() => changeWeek(allWeeks[allWeeks.length - 1])}>
                         {({
@@ -476,9 +444,9 @@ export default function Home() {
                         }) => {
                             return <Box width="100%" height="48px" justifyContent="center" bg={isPressed ? "coolGray.200" : "white"} borderTopWidth="0.5" borderBottomWidth="0.5" borderColor="muted.300">
                                 <Box flexDir="row" mx="3">
-                                    <Text>{allWeeks[allWeeks.length - 1].mondayDate}</Text>
+                                    <Text>{allWeeks[allWeeks.length - 1].mondayDate} - week_id: {allWeeks[allWeeks.length - 1].week_id}</Text>
                                     <Spacer />
-                                    <Text>__%</Text>
+                                    {isThisWeekCurrentlySelected(allWeeks[allWeeks.length - 1])}
                                 </Box>
                             </Box>
                         }}
@@ -497,7 +465,9 @@ export default function Home() {
                                         }) => {
                                             return <Box width="100%" height="48px" justifyContent="center" bg={isPressed ? "coolGray.200" : "white"}>
                                                 <Box flexDir="row" mx="3">
-                                                    <Text>{curr.mondayDate}</Text>
+                                                    <Text>{curr.mondayDate} - week_id: {curr.week_id}</Text>
+                                                    <Spacer />
+                                                    {isThisWeekCurrentlySelected(curr)}
                                                 </Box>
                                             </Box>
                                         }}
