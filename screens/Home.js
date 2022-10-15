@@ -10,16 +10,123 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Text, View, Button, Avatar, Box, Spacer, Pressable } from 'native-base';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { globalExerciseDefs } from '../components/AllExercises'
 
 const defaultAllWeeks = [
     {
         mondayDate: "October 3, 2022",
-        id: 0,
-        exercises: []
+        week_id: -1,
+        exercises: [
+            {
+                "name": "Dummy",
+                "nameInternal": "DummyOne",
+                "id": 0,
+                "dayOfWeek": "Monday",
+                "trainingMax": 290,
+                "setInfo": [
+                    {
+                        "reps": 8,
+                        "percent": 0.65,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.75,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.85,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.85,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.85,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 5,
+                        "percent": 0.8,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.75,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": "8+",
+                        "percent": 0.65,
+                        "repsDone": 0
+                    }
+                ],
+                "setsCompleted": 0
+            },
+            {
+                "name": "Dummy",
+                "nameInternal": "DummyTwo",
+                "id": 1,
+                "dayOfWeek": "Monday",
+                "trainingMax": 175,
+                "setInfo": [
+                    {
+                        "reps": 6,
+                        "percent": 0.5,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 5,
+                        "percent": 0.6,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 3,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 5,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 7,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 4,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 6,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    },
+                    {
+                        "reps": 8,
+                        "percent": 0.7,
+                        "repsDone": 0
+                    }
+                ],
+                "setsCompleted": 0
+            }
+        ]
     },
     {
         mondayDate: "October 10, 2022",
-        id: 1,
+        week_id: 1,
         exercises: [
             {
                 "name": "Bench",
@@ -130,12 +237,107 @@ const defaultAllWeeks = [
     },
 ]
 
+function calcExercises(day) {
+    console.log("Calculating exercises for " + day + ": ")
+
+    var result = [];
+
+    globalExerciseDefs.forEach(globalExerciseDefElement => {
+        if (globalExerciseDefElement.dayOfWeek == day) {
+
+            const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
+
+            var thisDayExercise = defaultExerciseInfo;
+            thisDayExercise.name = globalExerciseDefElement.name;
+            thisDayExercise.nameInternal = globalExerciseDefElement.nameInternal;
+            thisDayExercise.id = globalExerciseDefElement.id;
+            thisDayExercise.dayOfWeek = globalExerciseDefElement.dayOfWeek;
+            thisDayExercise.trainingMax = globalExerciseDefElement.trainingMax;
+
+            var toThisDaySetInfo = [];
+
+            // Iterates through the globalExerciseDefs to populate this day's setInfo with the necessarry "reps", "percent" and adds a "done" of 0.
+            globalExerciseDefElement.setInfoDefs.forEach(globalSetInfoDefElement => {
+
+                const defaultSetInfoElement = { reps: 0, percent: 0.00, repsDone: 0 };
+
+                var thisDaySetInfoElement = defaultSetInfoElement;
+
+                thisDaySetInfoElement.reps = globalSetInfoDefElement.reps;
+                thisDaySetInfoElement.percent = globalSetInfoDefElement.percent;
+
+                toThisDaySetInfo.push(thisDaySetInfoElement)
+            });
+
+            thisDayExercise.setInfo = toThisDaySetInfo;
+
+            result.push(thisDayExercise);
+
+            console.log("\t-> " + thisDayExercise.name + "... ")
+        }
+    });
+
+    console.log("")
+
+    return result;
+}
+
 export default function Home() {
 
     const [allWeeks, changeAllWeeks] = React.useState(defaultAllWeeks)
 
-    const [week, changeWeek] = React.useState(allWeeks[allWeeks.length - 1])
+    const [week, changeWeek] = React.useState(defaultAllWeeks[0])
 
+    function populateWeek() {
+
+        const defaultWeek = {mondayDate: "", week_id: -1, exercises: []}
+
+        var result = defaultWeek;
+
+        result.mondayDate = "October 10, 2022"
+
+        result.week_id = 1;
+
+        var exercises = [];
+
+        calcExercises("Monday").forEach(element => {
+            exercises.push(element);
+        });
+
+        calcExercises("Tuesday").forEach(element => {
+            exercises.push(element);
+        });
+
+        calcExercises("Wednesday").forEach(element => {
+            exercises.push(element);
+        });
+
+        calcExercises("Thursday").forEach(element => {
+            exercises.push(element);
+        });
+
+        calcExercises("Friday").forEach(element => {
+            exercises.push(element);
+        });
+
+        //console.log(JSON.stringify(result, null, 4));
+
+        result.exercises = exercises;
+
+        console.log(JSON.stringify(result, null, 4));
+
+        return result;
+    }
+
+    function renderDaysAndExercises()
+    {
+        console.log("Week ID: " + week.week_id)
+
+        if(week.week_id == -1)
+            changeWeek(populateWeek());
+        else
+            return (<DaysAndExercises week={week} />)
+    }
 
     //   For some reason the Stack navigator does not support custom header heights unlike the Tab navigator so I have to make my own TopHeader...
 
@@ -183,9 +385,9 @@ export default function Home() {
         return (
             <View flex="1">
                 <Box height={NativeConstants.statusBarHeight + "px"} bg="white" />
-                <MainHomeTopHeader navigation={navigation} week={week}/>
-                <WeightCalculator />
-                <DaysAndExercises week={week}/>
+                <MainHomeTopHeader navigation={navigation} week={week} />
+                <WeightCalculator />                
+                {renderDaysAndExercises()}
             </View>
         );
     }
