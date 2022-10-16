@@ -14,7 +14,7 @@ import { globalExerciseDefs } from '../components/AllExercises'
 
 const defaultAllWeeks = [
     {
-        mondayDate: "September 26, 2022",
+        mondayDate: "9/26/2022",
         week_id: 0,
         exercises: [
             {
@@ -125,7 +125,7 @@ const defaultAllWeeks = [
         ]
     },
     {
-        mondayDate: "October 3, 2022",
+        mondayDate: "10/3/2022",
         week_id: 1,
         exercises: [
             {
@@ -238,7 +238,7 @@ const defaultAllWeeks = [
 ]
 
 function calcExercises(day) {
-    console.log("Calculating exercises for " + day + ": ")
+    //console.log("Calculating exercises for " + day + ": ")
 
     var result = [];
 
@@ -273,11 +273,11 @@ function calcExercises(day) {
 
             result.push(thisDayExercise);
 
-            console.log("\t-> " + thisDayExercise.name + "... ")
+            //console.log("\t-> " + thisDayExercise.name + "... ")
         }
     });
 
-    console.log("")
+    //console.log("")
 
     return result;
 }
@@ -291,7 +291,7 @@ export default function Home() {
     const [justCreatedNewWeek, changeJustCreatedNewWeek] = React.useState(false)
 
     function renderDaysAndExercises() {
-        console.log("Week ID: " + week.week_id)
+        //console.log("Week ID: " + week.week_id)
 
         // if (week.exercises.length == 0)
         //     changeWeek(populateWeek());
@@ -301,13 +301,13 @@ export default function Home() {
         return (<DaysAndExercises week={week} />)
     }
 
-    function createNewWeek() {
+    function createNewWeek(startDate) {
 
         const defaultWeek = { mondayDate: "", week_id: -1, exercises: [] }
 
         var newWeek = defaultWeek;
 
-        newWeek.mondayDate = "October 10, 2022"
+        newWeek.mondayDate = startDate;
 
         newWeek.week_id = allWeeks.length;
 
@@ -341,9 +341,50 @@ export default function Home() {
         changeJustCreatedNewWeek(true);
     }
 
+    function shouldWeMakeANewWeek() {
+        // Checks if the current day is 7 days or later than the latest week created.
+        // Ex: If the latest week made is Monday, October 3 and today is Wednesday, October 12, then make a new week starting on the appropriate monday (which would be October 10).
+
+        const latestWeekMondayDate = allWeeks[allWeeks.length - 1].mondayDate;
+        
+        // const curr = new Date();
+        // const first = curr.getDate() - curr.getDay() + 1;
+
+        // console.log(curr.getDate());
+        // console.log(curr.getDay());
+
+        var ms_in_a_day = 1000 * 3600 * 24;
+
+        var date1 = new Date(latestWeekMondayDate);
+        var today = new Date();
+
+        var time_between = today.getTime() - date1.getTime();
+
+        var days_between = time_between / ms_in_a_day;
+
+        console.log("days_beween: " + days_between);
+
+        // If there are 7 days or more between the latest week start and the current day, find the appropriate monday for the new week
+        if(days_between >= 7)
+        {
+            var currDayOfWeek = today.getDay() - 1;
+            if(currDayOfWeek < 0)
+                currDayOfWeek = 6;
+            console.log("today.getDate(): " + today.getDate())
+            console.log("currDayOfWeek: " + currDayOfWeek)
+
+            var appropriateMonday = new Date(today.getTime() - (currDayOfWeek * ms_in_a_day));
+
+            // Create the week
+            createNewWeek(appropriateMonday.toLocaleDateString());
+
+            console.log(appropriateMonday.toLocaleDateString());
+        }
+    }
+
     // Anytime the current week is changed, update the allWeeks hook
     React.useEffect(() => {
-        console.log("Firing week useEffect")
+        //console.log("Firing week useEffect")
 
         var tempAllWeeks = allWeeks;
 
@@ -359,7 +400,7 @@ export default function Home() {
     }, [week])
 
     React.useEffect(() => {
-        createNewWeek();
+        shouldWeMakeANewWeek();
     }, [])
 
     React.useEffect(() => {
@@ -434,7 +475,7 @@ export default function Home() {
                 <SetWeekTopHeader navigation={navigation} />
                 <Box flex="1">
                     <Spacer />
-                    <Button onPress={() => { createNewWeek() }}>Create new week</Button>
+                    <Button onPress={() => { createNewWeek("10/31/2022") }}>Create new week</Button>
                     <Text color="grey" fontSize="xs" mx="3" my="1">LATEST WEEK</Text>
                     <Pressable onPress={() => changeWeek(allWeeks[allWeeks.length - 1])}>
                         {({
