@@ -346,12 +346,6 @@ export default function Home() {
         // Ex: If the latest week made is Monday, October 3 and today is Wednesday, October 12, then make a new week starting on the appropriate monday (which would be October 10).
 
         const latestWeekMondayDate = allWeeks[allWeeks.length - 1].mondayDate;
-        
-        // const curr = new Date();
-        // const first = curr.getDate() - curr.getDay() + 1;
-
-        // console.log(curr.getDate());
-        // console.log(curr.getDay());
 
         var ms_in_a_day = 1000 * 3600 * 24;
 
@@ -384,7 +378,6 @@ export default function Home() {
 
     // Anytime the current week is changed, update the allWeeks hook
     React.useEffect(() => {
-        //console.log("Firing week useEffect")
 
         var tempAllWeeks = allWeeks;
 
