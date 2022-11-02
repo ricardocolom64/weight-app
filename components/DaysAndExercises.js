@@ -12,27 +12,6 @@ import { Details } from './ExerciseCard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { globalExerciseDefs } from './AllExercises';
 
-const sampleMondayExercises = [
-  {
-    name: "Bench",
-    nameInternal: "BenchMonday",
-    id: 0,
-    dayOfWeek: "Monday",
-    trainingMax: 290,
-    setInfo: [{ reps: 8, percent: 0.65, repsDone: 0 }, { reps: 6, percent: 0.75, repsDone: 0 }, { reps: 4, percent: 0.85, repsDone: 0 }, { reps: 4, percent: 0.85, repsDone: 0 }, { reps: 4, percent: 0.85, repsDone: 0 }, { reps: 5, percent: 0.8, repsDone: 0 }, { reps: 6, percent: 0.75, repsDone: 0 }, { reps: 6, percent: 0.7, repsDone: 0 }, { reps: "8+", percent: 0.65, repsDone: 0 }],
-    setsCompleted: 0,
-  },
-  {
-    name: "Overhead Press",
-    nameInternal: "OverheadPress",
-    id: 1,
-    dayOfWeek: "Monday",
-    trainingMax: 175,
-    setInfo: [{ reps: 6, percent: 0.50, repsDone: 0 }, { reps: 5, percent: 0.60, repsDone: 0 }, { reps: 3, percent: 0.70, repsDone: 0 }, { reps: 5, percent: 0.70, repsDone: 0 }, { reps: 7, percent: 0.70, repsDone: 0 }, { reps: 4, percent: 0.70, repsDone: 0 }, { reps: 6, percent: 0.70, repsDone: 0 }, { reps: 8, percent: 0.70, repsDone: 0 }],
-    setsCompleted: 0,
-  }
-]
-
 function RoundToNearest(num) {
   var result = Math.round(num * 0.2);
   return result * 5;
@@ -57,44 +36,7 @@ export default function DaysAndExercises(props) {
         result.push(element)
       }
     })
-
-    // globalExerciseDefs.forEach(globalExerciseDefElement => {
-    //   if (globalExerciseDefElement.dayOfWeek == day) {
-
-    //     const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
-
-    //     var thisDayExercise = defaultExerciseInfo;
-    //     thisDayExercise.name = globalExerciseDefElement.name;
-    //     thisDayExercise.nameInternal = globalExerciseDefElement.nameInternal;
-    //     thisDayExercise.id = globalExerciseDefElement.id;
-    //     thisDayExercise.dayOfWeek = globalExerciseDefElement.dayOfWeek;
-    //     thisDayExercise.trainingMax = globalExerciseDefElement.trainingMax;
-
-    //     var toThisDaySetInfo = [];
-
-    //     // Iterates through the globalExerciseDefs to populate this day's setInfo with the necessarry "reps", "percent" and adds a "done" of 0.
-    //     globalExerciseDefElement.setInfoDefs.forEach(globalSetInfoDefElement => {
-
-    //       const defaultSetInfoElement = { reps: 0, percent: 0.00, repsDone: 0 };
-
-    //       var thisDaySetInfoElement = defaultSetInfoElement;
-
-    //       thisDaySetInfoElement.reps = globalSetInfoDefElement.reps;
-    //       thisDaySetInfoElement.percent = globalSetInfoDefElement.percent;
-
-    //       toThisDaySetInfo.push(thisDaySetInfoElement)
-    //     });
-
-    //     thisDayExercise.setInfo = toThisDaySetInfo;
-
-    //     result.push(thisDayExercise);
-
-    //     console.log("\t-> " + thisDayExercise.name + "... ")
-    //   }
-    // });
-
-    //console.log("")
-
+    
     return result;
   }
 

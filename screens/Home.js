@@ -10,7 +10,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Text, View, Button, Avatar, Box, Spacer, Pressable, CheckIcon } from 'native-base';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { globalExerciseDefs } from '../components/AllExercises'
 
 const defaultAllWeeks = [
     {
@@ -237,52 +236,137 @@ const defaultAllWeeks = [
     },
 ]
 
-function calcExercises(day) {
-    //console.log("Calculating exercises for " + day + ": ")
-
-    var result = [];
-
-    globalExerciseDefs.forEach(globalExerciseDefElement => {
-        if (globalExerciseDefElement.dayOfWeek == day) {
-
-            const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
-
-            var thisDayExercise = defaultExerciseInfo;
-            thisDayExercise.name = globalExerciseDefElement.name;
-            thisDayExercise.nameInternal = globalExerciseDefElement.nameInternal;
-            thisDayExercise.id = globalExerciseDefElement.id;
-            thisDayExercise.dayOfWeek = globalExerciseDefElement.dayOfWeek;
-            thisDayExercise.trainingMax = globalExerciseDefElement.trainingMax;
-
-            var toThisDaySetInfo = [];
-
-            // Iterates through the globalExerciseDefs to populate this day's setInfo with the necessarry "reps", "percent" and adds a "done" of 0.
-            globalExerciseDefElement.setInfoDefs.forEach(globalSetInfoDefElement => {
-
-                const defaultSetInfoElement = { reps: 0, percent: 0.00, repsDone: 0 };
-
-                var thisDaySetInfoElement = defaultSetInfoElement;
-
-                thisDaySetInfoElement.reps = globalSetInfoDefElement.reps;
-                thisDaySetInfoElement.percent = globalSetInfoDefElement.percent;
-
-                toThisDaySetInfo.push(thisDaySetInfoElement)
-            });
-
-            thisDayExercise.setInfo = toThisDaySetInfo;
-
-            result.push(thisDayExercise);
-
-            //console.log("\t-> " + thisDayExercise.name + "... ")
-        }
-    });
-
-    //console.log("")
-
-    return result;
-}
-
 export default function Home() {
+
+    const defaultGlobalExerciseDefs = [
+        {
+            name: "Bench",
+            nameInternal: "BenchMonday",
+            id: 0,
+            dayOfWeek: "Monday",
+            trainingMax: 290,
+            setInfoDefs: [{ reps: 8, percent: 0.65 }, { reps: 6, percent: 0.75 }, { reps: 4, percent: 0.85 }, { reps: 4, percent: 0.85 }, { reps: 4, percent: 0.85 }, { reps: 5, percent: 0.8 }, { reps: 6, percent: 0.75 }, { reps: 6, percent: 0.7 }, { reps: "8+", percent: 0.65 }]
+        },
+        {
+            name: "Overhead Press",
+            nameInternal: "OverheadPressMonday",
+            id: 1,
+            dayOfWeek: "Monday",
+            trainingMax: 175,
+            setInfoDefs: [{ reps: 6, percent: 0.50 }, { reps: 5, percent: 0.60 }, { reps: 3, percent: 0.70 }, { reps: 5, percent: 0.70 }, { reps: 7, percent: 0.70 }, { reps: 4, percent: 0.70 }, { reps: 6, percent: 0.70 }, { reps: 8, percent: 0.70 }]
+        },
+        {
+            name: "Squat",
+            nameInternal: "Squat",
+            id: 2,
+            dayOfWeek: "Tuesday",
+            trainingMax: 300,
+            setInfoDefs: [{ reps: 5, percent: 0.75 }, { reps: 3, percent: 0.85 }, { reps: "1+", percent: 0.95 }, { reps: 3, percent: 0.90 }, { reps: 3, percent: 0.85 }, { reps: 3, percent: 0.80 }, { reps: 5, percent: 0.75 }, { reps: 5, percent: 0.70 }, { reps: "5+", percent: 0.65 }]
+        },
+        {
+            name: "Sumo Deadlift",
+            nameInternal: "SumoDeadlift",
+            id: 3,
+            dayOfWeek: "Tuesday",
+            trainingMax: 385,
+            setInfoDefs: [{ reps: 5, percent: 0.50 }, { reps: 5, percent: 0.60 }, { reps: 3, percent: 0.70 }, { reps: 5, percent: 0.70 }, { reps: 7, percent: 0.70 }, { reps: 4, percent: 0.70 }, { reps: 6, percent: 0.70 }, { reps: 8, percent: 0.70 }]
+        },
+        {
+            name: "Overhead Press",
+            nameInternal: "OverheadPressWednesday",
+            id: 4,
+            dayOfWeek: "Wednesday",
+            trainingMax: 175,
+            setInfoDefs: [{ reps: 5, percent: 0.75 }, { reps: 3, percent: 0.85 }, { reps: "1+", percent: 0.95 }, { reps: 3, percent: 0.90 }, { reps: 3, percent: 0.85 }, { reps: 3, percent: 0.80 }, { reps: 5, percent: 0.75 }, { reps: 5, percent: 0.70 }, { reps: "5+", percent: 0.65 }]
+        },
+        {
+            name: "Incline Bench",
+            nameInternal: "InclineBench",
+            id: 5,
+            dayOfWeek: "Wednesday",
+            trainingMax: 290,
+            setInfoDefs: [{ reps: 6, percent: 0.40 }, { reps: 5, percent: 0.50 }, { reps: 3, percent: 0.60 }, { reps: 5, percent: 0.60 }, { reps: 7, percent: 0.60 }, { reps: 4, percent: 0.60 }, { reps: 6, percent: 0.60 }, { reps: 8, percent: 0.60 }]
+        },
+        {
+            name: "Deadlift",
+            nameInternal: "Deadlift",
+            id: 6,
+            dayOfWeek: "Thursday",
+            trainingMax: 385,
+            setInfoDefs: [{ reps: 5, percent: 0.75 }, { reps: 3, percent: 0.85 }, { reps: "1+", percent: 0.95 }, { reps: 3, percent: 0.90 }, { reps: 3, percent: 0.85 }, { reps: 3, percent: 0.80 }, { reps: 3, percent: 0.75 }, { reps: 3, percent: 0.70 }, { reps: "3+", percent: 0.65 }]
+        },
+        {
+            name: "Front Squat",
+            nameInternal: "Front Squat",
+            id: 7,
+            dayOfWeek: "Thursday",
+            trainingMax: 305,
+            setInfoDefs: [{ reps: 5, percent: 0.35 }, { reps: 5, percent: 0.45 }, { reps: 3, percent: 0.55 }, { reps: 5, percent: 0.55 }, { reps: 7, percent: 0.55 }, { reps: 4, percent: 0.55 }, { reps: 6, percent: 0.55 }, { reps: 8, percent: 0.55 }]
+        },
+        {
+            name: "Bench",
+            nameInternal: "BenchFriday",
+            id: 8,
+            dayOfWeek: "Friday",
+            trainingMax: 290,
+            setInfoDefs: [{ reps: 5, percent: 0.75 }, { reps: 3, percent: 0.85 }, { reps: "1+", percent: 0.95 }, { reps: 3, percent: 0.90 }, { reps: 5, percent: 0.85 }, { reps: 3, percent: 0.80 }, { reps: 5, percent: 0.75 }, { reps: 3, percent: 0.70 }, { reps: "5+", percent: 0.65 }]
+        },
+        {
+            name: "Close Grip Bench",
+            nameInternal: "CloseGripBench",
+            id: 9,
+            dayOfWeek: "Friday",
+            trainingMax: 290,
+            setInfoDefs: [{ reps: 6, percent: 0.40 }, { reps: 5, percent: 0.50 }, { reps: 3, percent: 0.60 }, { reps: 5, percent: 0.60 }, { reps: 7, percent: 0.60 }, { reps: 4, percent: 0.60 }, { reps: 6, percent: 0.60 }, { reps: 8, percent: 0.60 }]
+        },
+    ]
+
+    const [globalExerciseDefs, changeGlobalExerciseDefs] = React.useState(defaultGlobalExerciseDefs);
+
+    function calcExercises(day) {
+        //console.log("Calculating exercises for " + day + ": ")
+
+        var result = [];
+
+        globalExerciseDefs.forEach(globalExerciseDefElement => {
+            if (globalExerciseDefElement.dayOfWeek == day) {
+
+                const defaultExerciseInfo = { name: "", nameInternal: "", id: 0, dayOfWeek: "", trainingMax: 0, setInfo: [], setsCompleted: 0 };
+
+                var thisDayExercise = defaultExerciseInfo;
+                thisDayExercise.name = globalExerciseDefElement.name;
+                thisDayExercise.nameInternal = globalExerciseDefElement.nameInternal;
+                thisDayExercise.id = globalExerciseDefElement.id;
+                thisDayExercise.dayOfWeek = globalExerciseDefElement.dayOfWeek;
+                thisDayExercise.trainingMax = globalExerciseDefElement.trainingMax;
+
+                var toThisDaySetInfo = [];
+
+                // Iterates through the globalExerciseDefs to populate this day's setInfo with the necessarry "reps", "percent" and adds a "done" of 0.
+                globalExerciseDefElement.setInfoDefs.forEach(globalSetInfoDefElement => {
+
+                    const defaultSetInfoElement = { reps: 0, percent: 0.00, repsDone: 0 };
+
+                    var thisDaySetInfoElement = defaultSetInfoElement;
+
+                    thisDaySetInfoElement.reps = globalSetInfoDefElement.reps;
+                    thisDaySetInfoElement.percent = globalSetInfoDefElement.percent;
+
+                    toThisDaySetInfo.push(thisDaySetInfoElement)
+                });
+
+                thisDayExercise.setInfo = toThisDaySetInfo;
+
+                result.push(thisDayExercise);
+
+                //console.log("\t-> " + thisDayExercise.name + "... ")
+            }
+        });
+
+        //console.log("")
+
+        return result;
+    }
 
     const [allWeeks, changeAllWeeks] = React.useState(defaultAllWeeks)
 
@@ -359,10 +443,9 @@ export default function Home() {
         console.log("days_beween: " + days_between);
 
         // If there are 7 days or more between the latest week start and the current day, find the appropriate monday for the new week
-        if(days_between >= 7)
-        {
+        if (days_between >= 7) {
             var currDayOfWeek = today.getDay() - 1;
-            if(currDayOfWeek < 0)
+            if (currDayOfWeek < 0)
                 currDayOfWeek = 6;
             console.log("today.getDate(): " + today.getDate())
             console.log("currDayOfWeek: " + currDayOfWeek)
