@@ -382,7 +382,7 @@ export default function Home() {
         // else
         //     return (<DaysAndExercises week={week} />)
 
-        return (<DaysAndExercises week={week} globalExerciseDefs={globalExerciseDefs} changeGlobalExerciseDefs={changeGlobalExerciseDefs}/>)
+        return (<DaysAndExercises week={week} globalExerciseDefs={globalExerciseDefs} changeGlobalExerciseDefs={changeGlobalExerciseDefs} />)
     }
 
     function createNewWeek(startDate) {
@@ -493,8 +493,10 @@ export default function Home() {
                 <Box>
                     <Button borderRadius={"8"} padding="1" colorScheme="light" variant="ghost" onPress={() => props.navigation.navigate('SetWeekScreen')}>
                         <Box justifyContent="center" alignItems="center" width="190">
+
+                            <Text fontSize="xs" color="grey">Week of...</Text>
                             <Text fontWeight={"bold"} fontSize="md">{props.week.mondayDate}</Text>
-                            <Text fontSize="xs" color="grey">(Current)</Text>
+                            {/* <Text fontSize="xs" color="grey">(Current)</Text> */}
                         </Box>
                     </Button>
                 </Box>
@@ -558,10 +560,18 @@ export default function Home() {
                             isHovered,
                             isPressed,
                             isFocused
-                        }) => {
+                        }) => {                            
+                            const d = new Date(allWeeks[allWeeks.length - 1].mondayDate);
+
+                            const allMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+                            const month = d.getMonth();
+                            const day = d.getDate();
+                            const year = d.getFullYear();
+
                             return <Box width="100%" height="48px" justifyContent="center" bg={isPressed ? "coolGray.200" : "white"} borderTopWidth="0.5" borderBottomWidth="0.5" borderColor="muted.300">
                                 <Box flexDir="row" mx="3">
-                                    <Text>{allWeeks[allWeeks.length - 1].mondayDate} - week_id: {allWeeks[allWeeks.length - 1].week_id}</Text>
+                                    <Text>{allMonths[month]} {day}, {year}</Text>
                                     <Spacer />
                                     {isThisWeekCurrentlySelected(allWeeks[allWeeks.length - 1])}
                                 </Box>
@@ -573,6 +583,13 @@ export default function Home() {
                     <Box bg="white" borderTopWidth="0.5" borderBottomWidth="0.5" borderColor="muted.300" flexDir="column-reverse">
                         {allWeeks.map((curr, i) => {
                             if (i != allWeeks.length - 1) {
+                                const d = new Date(curr.mondayDate);
+
+                                const allMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+                                const month = d.getMonth();
+                                const day = d.getDate();
+                                const year = d.getFullYear();
                                 return (
                                     <Pressable onPress={() => changeWeek(curr)} key={i}>
                                         {({
@@ -582,7 +599,7 @@ export default function Home() {
                                         }) => {
                                             return <Box width="100%" height="48px" justifyContent="center" bg={isPressed ? "coolGray.200" : "white"}>
                                                 <Box flexDir="row" mx="3">
-                                                    <Text>{curr.mondayDate} - week_id: {curr.week_id}</Text>
+                                                    <Text>{allMonths[month]} {day}, {year}</Text>
                                                     <Spacer />
                                                     {isThisWeekCurrentlySelected(curr)}
                                                 </Box>
