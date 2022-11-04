@@ -192,15 +192,53 @@ export default function DaysAndExercises(props) {
 
       //TODO: If Bench, change for all Benches and OHP, if squat, change for all squats, etc.
       
-      globalExerciseDefs.forEach(element => {
-        if(element.id == props.exercise.id)
-        {
-          console.log("Should change training max to " + newTrainingMax + " for " + props.exercise.name);
+      if(props.exercise.name == "Bench" || props.exercise.name == "Incline Bench" || props.exercise.name == "Close Grip Bench")
+      {
+        globalExerciseDefs.forEach(element => {
+          if(element.name == "Bench" || element.name == "Incline Bench" || element.name == "Close Grip Bench")
+          {
+            console.log("Should change training max to " + newTrainingMax + " for Bench, Incline Bench, and Close Grip Bench");
+  
+            element.trainingMax = newTrainingMax;
+          }
+        })
+      }
 
-          element.trainingMax = newTrainingMax;
-          //console.log(element);
-        }
-      })
+      if(props.exercise.name == "Overhead Press")
+      {
+        globalExerciseDefs.forEach(element => {
+          if(element.name == "Overhead Press")
+          {
+            console.log("Should change training max to " + newTrainingMax + " for Overhead Press");
+  
+            element.trainingMax = newTrainingMax;
+          }
+        })
+      }
+
+      if(props.exercise.name == "Deadlift" || props.exercise.name == "Sumo Deadlift")
+      {
+        globalExerciseDefs.forEach(element => {
+          if(element.name == "Deadlift" || element.name || "Sumo Deadlift")
+          {
+            console.log("Should change training max to " + newTrainingMax + " for Deadlift, Sumo Deadlift");
+  
+            element.trainingMax = newTrainingMax;
+          }
+        })
+      }
+
+      if(props.exercise.name == "Squat" || props.exercise.name == "Front Squat")
+      {
+        globalExerciseDefs.forEach(element => {
+          if(element.name == "Squat" || element.name || "Front Squat")
+          {
+            console.log("Should change training max to " + newTrainingMax + " for Squat, Front Squat");
+  
+            element.trainingMax = newTrainingMax;
+          }
+        })
+      }
 
       handleChangeGlobalExerciseDefs(globalExerciseDefs);
 
