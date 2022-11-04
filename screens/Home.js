@@ -488,6 +488,15 @@ export default function Home() {
     //   For some reason the Stack navigator does not support custom header heights unlike the Tab navigator so I have to make my own TopHeader...
 
     function MainHomeTopHeader(props) {
+
+        const d = new Date(props.week.mondayDate);
+
+        const allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        const month = d.getMonth();
+        const day = d.getDate();
+        const year = d.getFullYear();
+
         return (
             <Box px="1" flexDir="row" alignItems="center" justifyContent="center" height="56px" borderBottomWidth={0.3} borderColor="muted.200" bg="white">
                 <Box>
@@ -495,7 +504,7 @@ export default function Home() {
                         <Box justifyContent="center" alignItems="center" width="190">
 
                             <Text fontSize="xs" color="grey">Week of...</Text>
-                            <Text fontWeight={"bold"} fontSize="md">{props.week.mondayDate}</Text>
+                            <Text fontWeight={"bold"} fontSize="md">{allMonths[month]} {day}, {year}</Text>
                             {/* <Text fontSize="xs" color="grey">(Current)</Text> */}
                         </Box>
                     </Button>
@@ -560,10 +569,10 @@ export default function Home() {
                             isHovered,
                             isPressed,
                             isFocused
-                        }) => {                            
+                        }) => {
                             const d = new Date(allWeeks[allWeeks.length - 1].mondayDate);
 
-                            const allMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+                            const allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
                             const month = d.getMonth();
                             const day = d.getDate();
@@ -585,7 +594,7 @@ export default function Home() {
                             if (i != allWeeks.length - 1) {
                                 const d = new Date(curr.mondayDate);
 
-                                const allMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+                                const allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
                                 const month = d.getMonth();
                                 const day = d.getDate();
