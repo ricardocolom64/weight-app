@@ -382,7 +382,7 @@ export default function Home() {
         // else
         //     return (<DaysAndExercises week={week} />)
 
-        return (<DaysAndExercises week={week} />)
+        return (<DaysAndExercises week={week} globalExerciseDefs={globalExerciseDefs} changeGlobalExerciseDefs={changeGlobalExerciseDefs}/>)
     }
 
     function createNewWeek(startDate) {

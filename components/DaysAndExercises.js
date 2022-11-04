@@ -19,6 +19,12 @@ function RoundToNearest(num) {
 
 export default function DaysAndExercises(props) {
 
+  const globalExerciseDefs = props.globalExerciseDefs;
+
+  const handleChangeGlobalExerciseDefs = (newGlobalExerciseDefs) => {
+    props.changeGlobalExerciseDefs(newGlobalExerciseDefs);
+  }
+
   const thisWeeksExercises = props.week.exercises
 
   //console.log(JSON.stringify(thisWeeksExercises, null, 4));
@@ -183,6 +189,20 @@ export default function DaysAndExercises(props) {
     // Iterate through the appropriate day's exercise hook (such as mondayExercises) to find the specific exercise that needs its trainingMax changed.
     const handleChangeTrainingMax = (newTrainingMax) => {
       changeCurrTrainingMax(newTrainingMax);
+
+      //TODO: If Bench, change for all Benches and OHP, if squat, change for all squats, etc.
+      
+      globalExerciseDefs.forEach(element => {
+        if(element.id == props.exercise.id)
+        {
+          console.log("Should change training max to " + newTrainingMax + " for " + props.exercise.name);
+
+          element.trainingMax = newTrainingMax;
+          //console.log(element);
+        }
+      })
+
+      handleChangeGlobalExerciseDefs(globalExerciseDefs);
 
       if (props.exercise.dayOfWeek == "Monday") {
         mondayExercises.forEach(element => {
